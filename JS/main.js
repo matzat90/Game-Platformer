@@ -4,6 +4,9 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1600;
 canvas.height = 900;
 
+//Gravity:
+const gravity = 0.25;
+
 //CollisionBox Array:
 let collisionBoxArr = [];
 collisionArr.forEach((row, y) => {
@@ -22,7 +25,8 @@ const player = new Player ({
     positionX: 100,
     positionY:100,
     width:100,
-    height:150});
+    height:150,
+    collisionBox: collisionBoxArr});
 
 //Animation loop:
 let lasttime;

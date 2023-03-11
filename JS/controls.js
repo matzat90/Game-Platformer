@@ -12,10 +12,12 @@ addEventListener("keydown", (event) => {
     //Move right:
     case "KeyD":
         control.right = true;
+        player.velocity.x = 1;
         break;
     //Move left:
     case "KeyA":
         control.left = true;
+        player.velocity.x = 1;
         break;
     }
     
@@ -27,10 +29,12 @@ addEventListener("keyup", (event) => {
     //Move right:
     case "KeyD":
         control.right = false;
+        player.velocity.x = 0;
         break;
     //Move left:
     case "KeyA":
         control.left = false;
+        player.velocity.x = 0;
         break;
     }
     

@@ -6,14 +6,19 @@ canvas.height = 900;
 
 //Animation loop:
 let lasttime;
-animate(){
-    if (lasttime != null){
-        let delta = lasttime -Date.now;
+// function animate() {
+//     if (lasttime != null){
+//         let delta = lasttime -Date.now;
 
-        window.requestAnimationFrame(animate);
-        console.log(delta);
-    }
-    lasttime = Date.now;
+//         window.requestAnimationFrame(animate);
+//         console.log(delta);
+//     }
+//     lasttime = Date.now;
+// }
+
+function test(){
+    let x = 1;
+    console.log(x);
 }
 
 animate();

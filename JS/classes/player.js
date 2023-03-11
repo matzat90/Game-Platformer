@@ -39,9 +39,18 @@ class Player {
             //Move player Horizontal
             moveX(delta){
                 //Move Right:
-                if (control.right){this.x += this.velocity.x * delta}
+                if (control.right){this.x += this.velocity.x * delta
+                }
                 //Move Left:
-                if (control.left){this.x += this.velocity.x * delta}
+                if (control.left){this.x += this.velocity.x * delta
+                }
+                //Move Canvas to Left and Right:
+                if (this.x > 800 && control.right){cam.x = -1 * Math.abs(this.velocity.x) * delta}
+                else if (this.x < 700 && control.left){cam.x = 1 * Math.abs(this.velocity.x) * delta}
+                else {cam.x = 0};
+
+                
+                        
                 //Move Left and Right:
                 if(control.left && control.right){this.velocity.x = 0}
             }

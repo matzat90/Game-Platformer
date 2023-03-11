@@ -7,6 +7,13 @@ canvas.height = 900;
 //Gravity:
 const gravity = 0.25;
 
+//Camer camX and camY to move boardgame (entire canvas)
+
+const cam = {
+    x: 0,
+    y: 0
+}
+
 //CollisionBox Array:
 let collisionBoxArr = [];
 collisionArr.forEach((row, y) => {
@@ -19,6 +26,8 @@ collisionArr.forEach((row, y) => {
         }
     })
 })
+
+console.log(collisionBoxArr)
 
 //Instances:
 const player = new Player 
@@ -37,13 +46,16 @@ let lasttime;
          let delta = (Date.now() - lasttime)/2;
          
          //Update section:
+        
         ctx.clearRect(0,0,canvas.width,canvas.height)
+        
+        ctx.translate(cam.x,cam.y);
         collisionBoxArr.forEach((el) => {
             el.update();
         })
         player.update(delta);
         
-         
+                
      }
      lasttime = Date.now();
      window.requestAnimationFrame(animate);

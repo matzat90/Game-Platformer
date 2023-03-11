@@ -21,12 +21,14 @@ collisionArr.forEach((row, y) => {
 })
 
 //Instances:
-const player = new Player ({
+const player = new Player 
+    ({
     positionX: 100,
     positionY:100,
     width:100,
     height:150,
-    collisionBox: collisionBoxArr});
+    collisionBox: collisionBoxArr
+    });
 
 //Animation loop:
 let lasttime;

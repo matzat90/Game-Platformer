@@ -17,9 +17,16 @@ addEventListener("keydown", (event) => {
     //Move left:
     case "KeyA":
         control.left = true;
-        player.velocity.x = 1;
+        player.velocity.x = -1;
         break;
+    case "KeyW":
+        if (player.jumpPremission){
+        control.up = true;
+        player.y = player.y - 2;
+        }
+        break
     }
+    
     
 })
 
@@ -36,6 +43,13 @@ addEventListener("keyup", (event) => {
         control.left = false;
         player.velocity.x = 0;
         break;
+        case "KeyW":
+            control.up = false;
+            player.jumpPremission = false;
+            player.jumpBlock = setTimeout(()=>{
+                player.jumpPremission = true;
+            }, player.jumpBlockTimer)
+        break
     }
     
 })

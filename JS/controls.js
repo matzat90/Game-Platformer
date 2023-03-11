@@ -18,11 +18,11 @@ addEventListener("keydown", (event) => {
         control.left = true;
         break;
     }
-    console.log(control);
+    
 })
 
 //Event Listner KEY UP:
-addEventListener("keydown", (event) => {
+addEventListener("keyup", (event) => {
     switch (event.code){
     //Move right:
     case "KeyD":
@@ -33,5 +33,5 @@ addEventListener("keydown", (event) => {
         control.left = false;
         break;
     }
-    console.log(control);
+    
 })

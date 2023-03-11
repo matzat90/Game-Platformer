@@ -52,6 +52,7 @@ class Player {
                     const curCol = this.collisionBox[i];
                     
                 if (collision(this, curCol)){
+                    console.log(collision(this,curCol))
                     if (this.velocity.x > 0 && control.right && control.up == false){
                         this.velocity.x = 0;
                         this.x = curCol.x - this.width - 0.01;

@@ -7,12 +7,7 @@ canvas.height = 900;
 //Gravity:
 const gravity = 0.25;
 
-//Camer camX and camY to move boardgame (entire canvas)
 
-const cam = {
-    x: 0,
-    y: 0
-}
 
 //CollisionBox Array:
 let collisionBoxArr = [];
@@ -27,7 +22,10 @@ collisionArr.forEach((row, y) => {
     })
 })
 
-console.log(collisionBoxArr)
+
+
+//Map size:
+const mapSize = collisionArr[1].length*50
 
 //Instances:
 const player = new Player 
@@ -47,13 +45,15 @@ let lasttime;
          
          //Update section:
         
-        ctx.clearRect(0,0,canvas.width,canvas.height)
+        ctx.clearRect(0,0,mapSize,canvas.height) //If map is not scaled than clear width and heigt must be equal to all map size.
         
-        ctx.translate(cam.x,cam.y);
+        ctx.translate(0,0);
         collisionBoxArr.forEach((el) => {
             el.update();
         })
         player.update(delta);
+        
+        
         
                 
      }

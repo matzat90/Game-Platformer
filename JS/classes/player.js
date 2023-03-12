@@ -19,41 +19,58 @@ class Player {
         }
         this.collisionBox = collisionBox;
         this.velVerMaxSpeed = 10;
+        //Jump control section:
         this.jumpPremission = true;
         this.jumpBlock; //blocks jump for Xs
         this.jumpBlockTimer = 250;
         this.jumpCount = 0; // jump control
         this.jumpMax = 20; // jump max distance
+        //Camera section:
+        this.cam =
+        {
+            width: 1200,
+            height: 500,
+            x: this.x + this.width/2 - (1200/2),
+            y: this.y - (500 - this.height),
+            color: "rgba(0,255,0,.5)"
+        }
     }
     //Main function:
     update(delta) {
+        this.applyGravity(delta);
+        this.jump();
         this.verticalCollision();
+        this.applyCam(delta);
         this.moveX(delta);
         this.horizontalCollision();
-        this.jump();
-        
-        this.applyGravity(delta);
+                
         ctx.fillStyle ="red";
         ctx.fillRect(this.x,this.y,this.width,this.height);
+        ctx.fillStyle = this.cam.color;
+        ctx.fillRect(this.cam.x,this.cam.y,this.cam.width,this.cam.height);
     }
-            //Move player Horizontal
+            //Move player and camera Horizontal
             moveX(delta){
                 //Move Right:
-                if (control.right){this.x += this.velocity.x * delta
-                }
+                if (control.right && this.x + this.width <= mapSize){this.x += this.velocity.x * delta
+                this.cam.x = this.x + this.width/2 - (1200/2)}
                 //Move Left:
-                if (control.left){this.x += this.velocity.x * delta
-                }
-                //Move Canvas to Left and Right:
-                if (this.x > 800 && control.right){cam.x = -1 * Math.abs(this.velocity.x) * delta}
-                else if (this.x < 700 && control.left){cam.x = 1 * Math.abs(this.velocity.x) * delta}
-                else {cam.x = 0};
-
-                
-                        
+                if (control.left && this.x >= 0){this.x += this.velocity.x * delta
+                    this.cam.x = this.x + this.width/2 - (1200/2)}
                 //Move Left and Right:
                 if(control.left && control.right){this.velocity.x = 0}
             }
+            //applyCam:
+            applyCam(delta){
+            if (this.cam.x > 200 && control.right && this.cam.x + this.cam.width <= mapSize - 200 ){
+                ctx.translate(-this.velocity.x*delta,0);
+            } else if (this.cam.x > 200 && control.left && this.cam.x + this.cam.width <= mapSize -200){
+                ctx.translate(-this.velocity.x*delta,0);
+            } else {
+                ctx.translate(0,0);
+            } 
+            
+             }
 
             //Collision Horizontal:
             horizontalCollision(){
@@ -61,17 +78,21 @@ class Player {
                     const curCol = this.collisionBox[i];
                     
                 if (collision(this, curCol)){
-                    console.log(collision(this,curCol))
+                    
                     if (this.velocity.x > 0 && control.right && control.up == false){
                         this.velocity.x = 0;
-                        this.x = curCol.x - this.width - 0.01;
+                        this.x = curCol.x - this.width -0.01;
+                        
+                        
                         
                     }
                     if (this.velocity.x < 0 && control.left && control.up == false){
                         this.velocity.x = 0;
                         this.x = curCol.x + curCol.width + 0.01;
+                        
+                        
                     }
-                   
+                    
                 }
             }
             }
@@ -84,6 +105,7 @@ class Player {
                 this.velocity.y == this.velVerMaxSpeed;
                 }
                 this.y += gravity*delta*this.velocity.y;
+                this.cam.y = this.y - (this.cam.height - this.height);
             }
 
             //Jump:

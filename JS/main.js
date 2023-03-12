@@ -3,7 +3,7 @@ const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = 1600;
 canvas.height = 900;
-
+ctx.translate(-600,0);
 //Gravity:
 const gravity = 0.25;
 
@@ -30,7 +30,7 @@ const mapSize = collisionArr[1].length*50
 //Instances:
 const player = new Player 
     ({
-    positionX: 100,
+    positionX: 1300,
     positionY:100,
     width:100,
     height:150,

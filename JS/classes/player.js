@@ -42,7 +42,7 @@ class Player {
         this.verticalCollision();
         this.applyCam(delta);
         this.moveX(delta);
-        this.horizontalCollision();
+        this.horizontalCollision(delta);
                 
         ctx.fillStyle ="red";
         ctx.fillRect(this.x,this.y,this.width,this.height);
@@ -66,14 +66,17 @@ class Player {
                 ctx.translate(-this.velocity.x*delta,0);
             } else if (this.cam.x > 200 && control.left && this.cam.x + this.cam.width <= mapSize -200){
                 ctx.translate(-this.velocity.x*delta,0);
-            } else {
+            } else if (this.cam.x <= 0 && control.left && this.cam.x + this.cam.width <= mapSize -200){
+                ctx.translate(0,0);
+            }
+            else {
                 ctx.translate(0,0);
             } 
             
              }
 
             //Collision Horizontal:
-            horizontalCollision(){
+            horizontalCollision(delta){
                 for (let i = 0; i<this.collisionBox.length; i++){
                     const curCol = this.collisionBox[i];
                     
@@ -82,6 +85,9 @@ class Player {
                     if (this.velocity.x > 0 && control.right && control.up == false){
                         this.velocity.x = 0;
                         this.x = curCol.x - this.width -0.01;
+                        if (this.cam.x > 200 && control.right && this.cam.x + this.cam.width <= mapSize - 200 ){
+                            ctx.translate(delta,0);
+                        } 
                         
                         
                         
@@ -89,7 +95,9 @@ class Player {
                     if (this.velocity.x < 0 && control.left && control.up == false){
                         this.velocity.x = 0;
                         this.x = curCol.x + curCol.width + 0.01;
-                        
+                        if (this.cam.x > 200 && control.left && this.cam.x + this.cam.width <= mapSize -200){
+                            ctx.translate(-delta,0);
+                        } 
                         
                     }
                     

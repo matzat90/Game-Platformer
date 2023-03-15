@@ -14,17 +14,15 @@ canvasBg.height = 900;
 const gravity = 0.25;
 
 //CollisionBox Array:
-console.log(testArr2)
-testArr2.forEach(()=> {
-    console.log("el")
-})
-const collisionArrTrue = [];
-for(let i = 0; i< testArr2.length; i += 150){
-    collisionArrTrue.push(testArr2.splice(i,150));
+
+
+const collisionArr = [];
+for(let i = 0; i< floorArr.length; i += 150){
+    collisionArr.push(floorArr.slice(i,i +150));
 }
-console.log(collisionArrTrue);
+
 let collisionBoxArr = [];
-collisionArrTrue.forEach((row, y) => {
+collisionArr.forEach((row, y) => {
     row.forEach((col,x) => {
         if (col == 15){
             collisionBoxArr.push(new CollisionBox({
@@ -34,10 +32,10 @@ collisionArrTrue.forEach((row, y) => {
         }
     })
 })
-console.log(collisionBoxArr);
+
 
 //Map size:
-const mapSize = collisionArrTrue[1].length*50
+const mapSize = collisionArr[0].length*50
 
 //Instances Bg-Canvas:
 const bgSky = new Image

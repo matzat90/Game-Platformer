@@ -11,13 +11,26 @@ addEventListener("keydown", (event) => {
     switch (event.code){
     //Move right:
     case "KeyD":
+        if (control.left) {
+        control.left = false;
         control.right = true;
         player.velocity.x = 1;
+        } else {
+        control.right = true;
+        player.velocity.x = 1;
+        }
         break;
     //Move left:
     case "KeyA":
+        
+        if (control.right) {
+        control.right = false;
         control.left = true;
         player.velocity.x = -1;
+        } else {
+        control.left = true;
+        player.velocity.x = -1;
+        }
         break;
     case "KeyW":
         if (player.jumpPremission){
@@ -35,13 +48,21 @@ addEventListener("keyup", (event) => {
     switch (event.code){
     //Move right:
     case "KeyD":
+        if (control.right == false){
+            return
+        } else {
         control.right = false;
         player.velocity.x = 0;
+        }
         break;
     //Move left:
     case "KeyA":
-        control.left = false;
+        if (control.left == false){
+         return
+        } else {
+            control.left = false;
         player.velocity.x = 0;
+        }
         break;
         case "KeyW":
             control.up = false;

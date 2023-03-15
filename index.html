@@ -6,19 +6,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Platformer</title>
     <style>
-        canvas {
+        body {
+            display: flex;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        .canvas1 {
+            position: absolute;
             border: 1px solid black;
+            left: 0;
+            top:0;
+            z-index: 5;
+
+        }
+        .canvas2 {
+            position: absolute;
+            border: 1px solid black;
+            left: 0;
+            top: 0;
+            z-index: 0;
+
+        }
+        .holder {
+            position: relative;
+            display: flex;
+            align-items: center;
+            
+            justify-content: center;
+            margin: auto;
+            width: 1600px;
+            height: 900px;
         }
 
     </style>
 </head>
 <body>
-    <canvas></canvas>
+    <div class="holder">
+    <canvas class="canvas1"></canvas>
+    <canvas class="canvas2"></canvas>
+    </div>
     <script src = "JS/data/collisionArr.js"></script>
     <script src="JS/utils/controls.js"></script>
     <script src="JS/utils/functions.js"></script>
     <script src="JS/classes/player.js"></script>
     <script src="JS/classes/collisionBox.js"></script>
+    <script src="JS/classes/autoLoopBg.js"></script>
+    <script src="JS/classes/paraBg.js"></script>
     <script src="JS/main.js"></script>
 </body>
 </html>

@@ -17,12 +17,13 @@ class Player {
             x:0,
             y:0
         }
+       
         this.collisionBox = collisionBox;
         this.velVerMaxSpeed = 10;
         //Jump control section:
         this.jumpPremission = true;
         this.jumpBlock; //blocks jump for Xs
-        this.jumpBlockTimer = 250;
+        this.jumpBlockTimer = 100;
         this.jumpCount = 0; // jump control
         this.jumpMax = 20; // jump max distance
         //Camera section:
@@ -34,6 +35,7 @@ class Player {
             y: this.y - (500 - this.height),
             color: "rgba(0,255,0,.5)"
         }
+
     }
     //Main function:
     update(delta) {
@@ -43,7 +45,7 @@ class Player {
         this.applyCam(delta);
         this.moveX(delta);
         this.horizontalCollision(delta);
-                
+            
         ctx.fillStyle ="red";
         ctx.fillRect(this.x,this.y,this.width,this.height);
         ctx.fillStyle = this.cam.color;
@@ -51,26 +53,32 @@ class Player {
     }
             //Move player and camera Horizontal
             moveX(delta){
-                //Move Right:
-                if (control.right && this.x + this.width <= mapSize){this.x += this.velocity.x * delta
-                this.cam.x = this.x + this.width/2 - (1200/2)}
-                //Move Left:
-                if (control.left && this.x >= 0){this.x += this.velocity.x * delta
-                    this.cam.x = this.x + this.width/2 - (1200/2)}
                 //Move Left and Right:
                 if(control.left && control.right){this.velocity.x = 0}
+                //Move Right:
+                if (control.right && control.left == false && this.x + this.width <= mapSize){this.x += this.velocity.x * delta
+                this.cam.x = this.x + this.width/2 - (1200/2)
+            }
+                //Move Left:
+                if (control.left &&  control.right == false && this.x >= 0){this.x += this.velocity.x * delta
+                   this.cam.x = this.x + this.width/2 - (1200/2)
+                }
+                
             }
             //applyCam:
             applyCam(delta){
-            if (this.cam.x > 200 && control.right && this.cam.x + this.cam.width <= mapSize - 200 ){
+            if (this.cam.x > 200 && control.right && control.left == false && this.cam.x + this.cam.width <= mapSize - 200 ){
                 ctx.translate(-this.velocity.x*delta,0);
-            } else if (this.cam.x > 200 && control.left && this.cam.x + this.cam.width <= mapSize -200){
+            } else if (this.cam.x > 200 && control.left && control.right == false && this.cam.x + this.cam.width <= mapSize -200){
                 ctx.translate(-this.velocity.x*delta,0);
+                
             } else if (this.cam.x <= 0 && control.left && this.cam.x + this.cam.width <= mapSize -200){
                 ctx.translate(0,0);
+                
             }
             else {
                 ctx.translate(0,0);
+                
             } 
             
              }
@@ -82,21 +90,35 @@ class Player {
                     
                 if (collision(this, curCol)){
                     
-                    if (this.velocity.x > 0 && control.right && control.up == false){
-                        this.velocity.x = 0;
-                        this.x = curCol.x - this.width -0.01;
-                        if (this.cam.x > 200 && control.right && this.cam.x + this.cam.width <= mapSize - 200 ){
+                    if (control.right){
+                        
+                        //this.velocity.x = 0;
+                        firstPlan.x += firstPlan.velocity*delta
+                        firstPlan2.x += firstPlan2.velocity*delta
+                        firstPlan3.x += firstPlan3.velocity*delta
+                        this.x = curCol.x - this.width -1;
+                        
+                        if (this.cam.x > 200 && (control.right && control.left == false) && this.cam.x + this.cam.width <= mapSize - 200 ){
                             ctx.translate(delta,0);
+                            
+                            
                         } 
                         
                         
                         
                     }
-                    if (this.velocity.x < 0 && control.left && control.up == false){
-                        this.velocity.x = 0;
-                        this.x = curCol.x + curCol.width + 0.01;
-                        if (this.cam.x > 200 && control.left && this.cam.x + this.cam.width <= mapSize -200){
+                    if (control.left){
+                        
+                        firstPlan.x -= firstPlan.velocity*delta
+                        firstPlan2.x -= firstPlan2.velocity*delta
+                        firstPlan3.x -= firstPlan3.velocity*delta
+                        this.x = curCol.x + curCol.width + 1;
+                        if (this.cam.x > 200 && (control.left && control.right == false) && this.cam.x + this.cam.width <= mapSize -200){
                             ctx.translate(-delta,0);
+                            
+                            
+                            
+                            
                         } 
                         
                     }

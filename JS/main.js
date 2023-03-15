@@ -77,11 +77,13 @@ const player = new Player
     ({
     positionX: 1300,
     positionY:100,
-    width:100,
-    height:150,
+    width:50,
+    height:99,
     collisionBox: collisionBoxArr
     });
 
+
+const playerSprObj = new Sprite(playerSpr,2,player)    
 
 const mainBg = new Image
 mainBg.src = "img/bg/Map2.png"
@@ -108,7 +110,7 @@ let lasttime;
         })
         
         player.update(delta);
-        
+        playerSprObj.drawSpr();
         
         
                 

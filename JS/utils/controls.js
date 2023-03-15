@@ -11,7 +11,17 @@ addEventListener("keydown", (event) => {
     switch (event.code){
     //Move right:
     case "KeyD":
+        if (playerSprObj.name != "RunR"){
+            changeSprite({
+                objectSpr: playerSpr,
+                 object: playerSprObj,
+                objectTarget: player
+             },0)
+        }
+        
+        
         if (control.left) {
+            
         control.left = false;
         control.right = true;
         player.velocity.x = 1;
@@ -19,11 +29,20 @@ addEventListener("keydown", (event) => {
         control.right = true;
         player.velocity.x = 1;
         }
+                
         break;
     //Move left:
     case "KeyA":
+        if (playerSprObj.name != "RunL"){
+            changeSprite({
+                objectSpr: playerSpr,
+                 object: playerSprObj,
+                objectTarget: player
+             },1)
+        }
         
         if (control.right) {
+            
         control.right = false;
         control.left = true;
         player.velocity.x = -1;
@@ -31,11 +50,12 @@ addEventListener("keydown", (event) => {
         control.left = true;
         player.velocity.x = -1;
         }
+        
         break;
     case "KeyW":
         if (player.jumpPremission){
         control.up = true;
-        player.y = player.y - 2;
+        player.y -= -2;
         }
         break
     }
@@ -48,21 +68,37 @@ addEventListener("keyup", (event) => {
     switch (event.code){
     //Move right:
     case "KeyD":
+        
+        changeSprite({
+        objectSpr: playerSpr,
+        object: playerSprObj,
+        objectTarget: player
+       },2)
         if (control.right == false){
+            
             return
         } else {
         control.right = false;
         player.velocity.x = 0;
         }
+        
         break;
     //Move left:
     case "KeyA":
+       
+       changeSprite({
+        objectSpr: playerSpr,
+        object: playerSprObj,
+       objectTarget: player
+       },3)
         if (control.left == false){
+           
          return
         } else {
             control.left = false;
         player.velocity.x = 0;
         }
+        
         break;
         case "KeyW":
             control.up = false;

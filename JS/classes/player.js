@@ -19,7 +19,7 @@ class Player {
         }
        
         this.collisionBox = collisionBox;
-        this.velVerMaxSpeed = 10;
+        this.velVerMaxSpeed = 25;
         //Jump control section:
         this.jumpPremission = true;
         this.jumpBlock; //blocks jump for Xs
@@ -44,6 +44,7 @@ class Player {
         this.verticalCollision();
         this.applyCam(delta);
         this.moveX(delta);
+        
         this.horizontalCollision(delta);
             
         ctx.fillStyle ="red";
@@ -58,10 +59,12 @@ class Player {
                 //Move Right:
                 if (control.right && control.left == false && this.x + this.width <= mapSize){this.x += this.velocity.x * delta
                 this.cam.x = this.x + this.width/2 - (1200/2)
+                
             }
                 //Move Left:
                 if (control.left &&  control.right == false && this.x >= 0){this.x += this.velocity.x * delta
                    this.cam.x = this.x + this.width/2 - (1200/2)
+                 
                 }
                 
             }
@@ -91,38 +94,25 @@ class Player {
                 if (collision(this, curCol)){
                     
                     if (control.right){
-                        
-                        //this.velocity.x = 0;
                         firstPlan.x += firstPlan.velocity*delta
                         firstPlan2.x += firstPlan2.velocity*delta
                         firstPlan3.x += firstPlan3.velocity*delta
                         this.x = curCol.x - this.width -1;
-                        
+                        //Move Gameboard:
                         if (this.cam.x > 200 && (control.right && control.left == false) && this.cam.x + this.cam.width <= mapSize - 200 ){
                             ctx.translate(delta,0);
-                            
-                            
                         } 
-                        
-                        
-                        
                     }
                     if (control.left){
-                        
                         firstPlan.x -= firstPlan.velocity*delta
                         firstPlan2.x -= firstPlan2.velocity*delta
                         firstPlan3.x -= firstPlan3.velocity*delta
                         this.x = curCol.x + curCol.width + 1;
+                        //Move Gameboard:
                         if (this.cam.x > 200 && (control.left && control.right == false) && this.cam.x + this.cam.width <= mapSize -200){
                             ctx.translate(-delta,0);
-                            
-                            
-                            
-                            
                         } 
-                        
                     }
-                    
                 }
             }
             }
@@ -130,7 +120,7 @@ class Player {
             //Applys global gravity from main.js
             applyGravity(delta){
                 if (this.velocity.y < this.velVerMaxSpeed){
-                this.velocity.y += 0.25;
+                this.velocity.y += .25;
                 } else {
                 this.velocity.y == this.velVerMaxSpeed;
                 }
@@ -161,20 +151,24 @@ class Player {
                     
                 if (collision(this, curCol)){
                     if (this.velocity.y > 0 && control.up == false){
+                        
                         this.jumpCount = 0;
                         this.velocity.y = 0;
                         this.y = curCol.y - this.height - 0.01;
                     }
                     if (this.velocity.y > 0 && control.up){
-                        control.up = false;
-                        this.y += 25;
+                        
+                        this.y = curCol.y + 50 + 0.01;
                         this.velocity.y = 0;
                         this.jumpPremission = false;
                         this.jumpBlock = setTimeout(()=>{
                             this.jumpPremission = true;
                         },this.jumpBlockTimer)
+                        control.up = false;
                     }
                 }
               }
             }
+
+        
 }

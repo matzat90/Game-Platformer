@@ -34,6 +34,19 @@ collisionArr.forEach((row, y) => {
 })
 
 
+let collisionCoinsArr = []
+collisionArr.forEach((row, y) => {
+    row.forEach((col,x) => {
+        if (col == 10){
+            collisionCoinsArr.push(new CollisionCoinBox({
+                positionX: x*50,
+                positionY: y*50
+            }))
+        }
+    })
+})
+
+
 //Map size:
 const mapSize = collisionArr[0].length*50
 
@@ -79,15 +92,26 @@ const player = new Player
     positionY:100,
     width:50,
     height:99,
-    collisionBox: collisionBoxArr
+    collisionBox: collisionBoxArr,
+    collisionCoins: collisionCoinsArr
     });
 
 
 const playerSprObj = new Sprite(playerSpr,2,player)    
 
+//Add Sprite for CoinsArr
+const coinsArrSpr = []
+console.log(collisionCoinsArr)
+for(i=0; i<collisionCoinsArr.length; i++){
+    let x = new Sprite(coinsSpr,0,collisionCoinsArr[i])
+    coinsArrSpr.push(x);
+    
+}
+console.log(coinsArrSpr)
+
 const mainBg = new Image
 mainBg.src = "img/bg/Map2.png"
-console.log(mainBg)
+
 
 //Animation loop:
 let lasttime;
@@ -108,10 +132,18 @@ let lasttime;
         collisionBoxArr.forEach((el) => {
             el.update();
         })
+        collisionCoinsArr.forEach((el)=> {
+            el.coinDraw();
+        })
+        coinsArrSpr.forEach((el)=> {
+            el.drawSpr();
+        })
         
         player.update(delta);
         playerSprObj.drawSpr();
         
+        ctxBg.font = "48px serif";
+        ctxBg.fillText(player.score, 10, 100);
         
                 
      }

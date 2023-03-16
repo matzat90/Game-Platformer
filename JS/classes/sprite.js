@@ -27,6 +27,6 @@ class Sprite {
     }
     drawSpr(){
         this.count()
-        ctx.drawImage(this.src, this.curFrame * (this.width/this.frames),0,(this.width/this.frames),this.sq,player.x - this.offSetX, player.y + this.offSetY,this.sq,this.sq )
+        ctx.drawImage(this.src, this.curFrame * (this.width/this.frames),0,(this.width/this.frames),this.sq, this.ObjTarget.x - this.offSetX, this.ObjTarget.y + this.offSetY,this.sq,this.sq )
     }
 }

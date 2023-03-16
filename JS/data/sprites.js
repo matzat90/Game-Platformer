@@ -10,6 +10,18 @@ playerSprRunR.src = "img/spr_player/RunR.png"
 const playerSprRunL = new Image(900,150)
 playerSprRunL.src = "img/spr_player/RunL.png"
 
+const playerSprJumpR = new Image(150,150)
+playerSprJumpR.src = "img/spr_player/JumpR.png"
+
+const playerSprJumpL = new Image(150,150)
+playerSprJumpL.src = "img/spr_player/JumpL.png"
+
+const playerSprFallR= new Image(150,150)
+playerSprFallR.src = "img/spr_player/FallR.png"
+
+const playerSprFallL= new Image(150,150)
+playerSprFallL.src = "img/spr_player/FallL.png"
+
 const playerSpr = [
     {
         name: "RunR",
@@ -56,23 +68,64 @@ const playerSpr = [
         frameSquer: 150
     },
     {
-        name: "JumpR",
-        img: "",
+        name: "JumpR", 
+        src: playerSprJumpR,
         fr: 1,
+        buffor: 10,
+        width: playerSprJumpR.width,
+        height: playerSprJumpR.hegiht,
+        offSetX: 45,
+        offSetY: -26,
+        frameSquer: 150
     },
     {
         name: "JumpL",
-        img: "",
-        fr: 4,
+        src: playerSprJumpL,
+        fr: 1,
+        buffor: 10,
+        width: playerSprJumpL.width,
+        height: playerSprJumpL.hegiht,
+        offSetX: 45,
+        offSetY: -26,
+        frameSquer: 150
     },
     {
         name: "FallR",
-        img: "",
-        fr: 4,
+        src: playerSprFallR,
+        fr: 1,
+        buffor: 10,
+        width: playerSprFallR.width,
+        height: playerSprFallR.hegiht,
+        offSetX: 45,
+        offSetY: -26,
+        frameSquer: 150
     },
     {
         name: "FallL",
-        img: "",
-        fr: 4,
+        src: playerSprFallL,
+        fr: 1,
+        buffor: 10,
+        width: playerSprFallL.width,
+        height: playerSprFallL.hegiht,
+        offSetX: 45,
+        offSetY: -26,
+        frameSquer: 150
     },
+]
+
+const coinsSprImg = new Image(250,50)
+coinsSprImg.src = "img/spr_star/stars.png"
+
+const coinsSpr = [
+    {
+        name: "starIdle",
+        src: coinsSprImg,
+        fr: 5,
+        buffor: 10,
+        width: coinsSprImg.width,
+        height: coinsSprImg.height,
+        offSetX: 0,
+        offSetY: 0,
+        frameSquer: 50
+    }
 ]

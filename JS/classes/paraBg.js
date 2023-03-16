@@ -20,7 +20,13 @@ class paraBg {
         }
     }
     draw(delta){
+        if (player.dead == false){
         this.move(delta);
         ctxBg.drawImage(this.src,this.x,this.y)
+        } else {
+        ctxBg.drawImage(this.src,this.x,this.y)
+        ctxBg.font = "48px serif";
+        ctxBg.fillText("Game Over", 300, 100);
+        }
     }
 }

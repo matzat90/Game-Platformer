@@ -5,7 +5,8 @@ class Player {
         positionY: y,
         width: width,
         height: height,
-        collisionBox: collisionBox
+        collisionBox: collisionBox,
+        collisionCoins: collisionCoins
         })
     {
         this.x = x;
@@ -17,9 +18,13 @@ class Player {
             x:0,
             y:0
         }
-       
+        this.face = "right"
         this.collisionBox = collisionBox;
+        this.collisionCoins = collisionCoins;
         this.velVerMaxSpeed = 25;
+        this.dead = false;
+        this.score = 0;
+        this.scoreMax = collisionCoinsArr.length
         //Jump control section:
         this.jumpPremission = true;
         this.jumpBlock; //blocks jump for Xs
@@ -39,18 +44,22 @@ class Player {
     }
     //Main function:
     update(delta) {
+        if (this.dead == false){
+        this.death()
         this.applyGravity(delta);
         this.jump();
         this.verticalCollision();
         this.applyCam(delta);
         this.moveX(delta);
-        
+        this.spriteControl();
+        this.collisionCoinsFun()
         this.horizontalCollision(delta);
-            
+        
         ctx.fillStyle ="red";
         ctx.fillRect(this.x,this.y,this.width,this.height);
         ctx.fillStyle = this.cam.color;
         ctx.fillRect(this.cam.x,this.cam.y,this.cam.width,this.cam.height);
+        }
     }
             //Move player and camera Horizontal
             moveX(delta){
@@ -117,6 +126,21 @@ class Player {
             }
             }
 
+            //Collision Coins:
+            collisionCoinsFun(){
+                for (let i = 0; i<this.collisionCoins.length; i++){
+                    const curCol = this.collisionCoins[i];
+                   
+                if (collision(this, curCol)){
+                    let x = this.collisionCoins.indexOf(curCol)
+                    this.collisionCoins.splice(x,1);
+                    coinsArrSpr.splice(x,1)
+                    this.score ++;
+                    
+                }
+            }
+            }
+
             //Applys global gravity from main.js
             applyGravity(delta){
                 if (this.velocity.y < this.velVerMaxSpeed){
@@ -128,7 +152,7 @@ class Player {
                 this.cam.y = this.y - (this.cam.height - this.height);
             }
 
-            //Jump:
+            //Jump (move Verticly):
             jump(){
             if (control.up && this.jumpPremission == true){
                 if (this.jumpCount < this.jumpMax){
@@ -169,6 +193,100 @@ class Player {
                 }
               }
             }
-
-        
+            //Sprite Control:
+            spriteControl(){
+                switch(this.face){
+                    case "right":
+                        if (this.velocity.y != 0 && control.up && playerSprObj != "JumpR"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },4)
+                        }else if (this.velocity.y != 0 && control.up && control.right && playerSprObj != "JumpR"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },4)
+                        }else if (this.velocity.y != 0 && !control.up && playerSprObj != "FallR"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },6)
+                            
+                        }else if (this.velocity.y != 0 && !control.up && control.right && playerSprObj != "FallR"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },6)
+                            
+                        }else if (!control.right && !control.left && !control.up && playerSprObj.name != "IdleR"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },2)
+                        }else if (control.right && !control.up && playerSprObj.name != "RunR"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },0)
+                        } 
+                    break
+                    case "left":
+                        if (this.velocity.y != 0 && control.up && playerSprObj != "JumpL"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },5)
+                        }else if (this.velocity.y != 0 && control.up && control.left && playerSprObj != "JumpL"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },5)
+                        }else if (this.velocity.y != 0 && !control.up && playerSprObj != "FallL"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },7)
+                            
+                        }else if (this.velocity.y != 0 && !control.up && control.left && playerSprObj != "FallL"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },7)
+                            
+                        }else if (!control.right && !control.left && !control.up && playerSprObj.name != "IdleL"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },3)
+                        }else if (control.left && !control.up && playerSprObj.name != "RunL"){
+                            changeSprite({
+                            objectSpr: playerSpr,
+                            object: playerSprObj,
+                            objectTarget: player
+                            },1)
+                        } 
+                    break
+                }
+            }
+            death(){
+                if(this.y > canvas.height){
+                    
+                    this.y = canvas.height + this.height;
+                    
+                    this.dead = true;
+                }
+            }
+            
 }

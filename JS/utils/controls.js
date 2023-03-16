@@ -11,13 +11,16 @@ addEventListener("keydown", (event) => {
     switch (event.code){
     //Move right:
     case "KeyD":
-        if (playerSprObj.name != "RunR"){
-            changeSprite({
-                objectSpr: playerSpr,
-                 object: playerSprObj,
-                objectTarget: player
-             },0)
-        }
+        
+        player.face = "right"
+        
+    //    if (playerSprObj.name != "RunR" && !control.up){
+    //        changeSprite({
+    //            objectSpr: playerSpr,
+    //             object: playerSprObj,
+     //           objectTarget: player
+    //         },0)
+    //    }
         
         
         if (control.left) {
@@ -33,13 +36,15 @@ addEventListener("keydown", (event) => {
         break;
     //Move left:
     case "KeyA":
-        if (playerSprObj.name != "RunL"){
-            changeSprite({
-                objectSpr: playerSpr,
-                 object: playerSprObj,
-                objectTarget: player
-             },1)
-        }
+        player.face = "left"
+        
+    //    if (playerSprObj.name != "RunL" && !control.up){
+    //        changeSprite({
+    //            objectSpr: playerSpr,
+    //             object: playerSprObj,
+    //            objectTarget: player
+    //         },1)
+    //    }
         
         if (control.right) {
             
@@ -57,6 +62,26 @@ addEventListener("keydown", (event) => {
         control.up = true;
         player.y -= -2;
         }
+    //    console.log(player.velocity.y)
+    //    if (player.velocity.y > 0){
+    //        if (player.face == "right"){
+    //            if (playerSprObj.name != "JumpR"){
+    //            changeSprite({
+    //                objectSpr: playerSpr,
+    //                 object: playerSprObj,
+    //                objectTarget: player
+    //             },4)
+    //            }
+    //        } else if (player.face == "left"){
+    //            if (playerSprObj.name != "JumpL"){
+    //            changeSprite({
+     //               objectSpr: playerSpr,
+     //                object: playerSprObj,
+    //                objectTarget: player
+    //             },5)
+    //            }
+    //        }
+    //    }
         break
     }
     
@@ -69,11 +94,11 @@ addEventListener("keyup", (event) => {
     //Move right:
     case "KeyD":
         
-        changeSprite({
-        objectSpr: playerSpr,
-        object: playerSprObj,
-        objectTarget: player
-       },2)
+//        changeSprite({
+//        objectSpr: playerSpr,
+//        object: playerSprObj,
+//        objectTarget: player
+//       },2)
         if (control.right == false){
             
             return
@@ -86,11 +111,11 @@ addEventListener("keyup", (event) => {
     //Move left:
     case "KeyA":
        
-       changeSprite({
-        objectSpr: playerSpr,
-        object: playerSprObj,
-       objectTarget: player
-       },3)
+//       changeSprite({
+//        objectSpr: playerSpr,
+//        object: playerSprObj,
+//       objectTarget: player
+//       },3)
         if (control.left == false){
            
          return

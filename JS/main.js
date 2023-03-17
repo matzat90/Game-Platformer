@@ -18,6 +18,15 @@ canvasFr.height = 900;
 //Gravity:
 const gravity = 0.25;
 
+//Global Velocity:
+
+const globalVel = 5;
+
+//Global Canvas Position:
+let canvasPositionZero = -521;
+let canvasPositionX = 0;
+
+
 //CollisionBox Array:
 
 
@@ -91,15 +100,7 @@ const firstPlan3 = new paraBg({
 })
 
 //Instances Game-Canvas:
-const player = new Player 
-    ({
-    positionX: 1300,
-    positionY:100,
-    width:50,
-    height:99,
-    collisionBox: collisionBoxArr,
-    collisionCoins: collisionCoinsArr
-    });
+
 const finishImg = new Image(75,100)
 finishImg.src = "img/doors/doorC.png"
 const finish = {
@@ -119,7 +120,9 @@ const finish = {
 
 }
 
-const playerSprObj = new Sprite(playerSpr,2,player)    
+
+
+
 
 //Enemy Object:
 
@@ -151,7 +154,7 @@ collisionEnemyArr.forEach((row, y) => {
                 width: 125,
                 height: 150,
                 collisionBox: collisionBoxEnemyArr,
-                playerBox: player,
+                
 
             }))
         }
@@ -176,7 +179,21 @@ const enemyGolem = new golemEnemy({
 })
 const enemySprObj = new Sprite(golemSpr,1,enemyGolem)
 
+//Player:
+const player = new Player 
+    ({
+    positionX: 1300,
+    positionY:100,
+    width:50,
+    height:99,
+    collisionBox: collisionBoxArr,
+    collisionCoins: collisionCoinsArr,
+    collisionEnemyGolem: Enemies
+    });
+const playerSprObj = new Sprite(playerSpr,2,player)
 
+//Camera:
+const camera = new Camera({positionX: player.x - 500, positionY: player.y, width: 1300, height: 500})
 
 //Add Sprite for CoinsArr
 const coinsArrSpr = []
@@ -201,9 +218,9 @@ let lasttime;
         ctxBg.clearRect(0,0,canvasBg.width,canvasBg.height) 
         ctxBg.drawImage(bgSky,0,0);
         bgClouds.draw(delta)
-        firstPlan3.draw(delta)
-        firstPlan2.draw(delta)
-        firstPlan.draw(delta)
+        firstPlan3.draw()
+        firstPlan2.draw()
+        firstPlan.draw()
         //Update Canvas-Game section:
         ctx.clearRect(0,0,mapSize,canvas.height) //If map is not scaled than clear width and heigt must be equal to all map size.
         ctx.drawImage(mainBg,0,0);
@@ -229,7 +246,7 @@ let lasttime;
         
         ctx.drawImage(finish.img, finish.x,finish.y)
         finish.fun1()
-        
+        camera.update(delta)
         player.update(delta);
         if (!player.dead){
         playerSprObj.drawSpr();

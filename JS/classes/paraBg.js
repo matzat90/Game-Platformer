@@ -12,16 +12,10 @@ class paraBg {
         this.x = 0;
         this.y = 0;
     }
-    move(delta){
-        if (control.right && this.x+this.width >= canvasBg.width){
-            this.x -= this.velocity*delta;
-        } else if (control.left && this.x <= 0){
-            this.x += this.velocity*delta;
-        }
-    }
-    draw(delta){
+   
+    draw(){
         if (player.dead == false && player.victory == false){
-        this.move(delta);
+        
         ctxBg.drawImage(this.src,this.x,this.y)
         } else {
         ctxBg.drawImage(this.src,this.x,this.y)

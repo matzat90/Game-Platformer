@@ -6,7 +6,7 @@ class golemEnemy {
         width: w,
         height: h,
         collisionBox: collisionBoxEnemyArr,
-        playerBox: playerBox,
+       
         
         
     }){
@@ -21,15 +21,17 @@ class golemEnemy {
             yMax: 25
         }
         this.collisionBox = collisionBoxEnemyArr
-        this.playerBox = playerBox
+        
         this.face = "left"
+        this.hit;
+        this.hitTimer;
     }
     update(delta){
         this.applyGravity(delta);
         this.verCollision()
         this.moveX(delta)
         this.horCollision()
-        this.playerColl()     
+           
         ctx.fillStyle = "red"
         ctx.fillRect(this.x,this.y,this.width,this.height)
     }
@@ -96,16 +98,8 @@ class golemEnemy {
         if (this.face == "right"){this.x += delta*this.velocity.x} 
         else if (this.face == "left"){this.x -= delta*this.velocity.x}
     }
-        
-    playerColl(){
-        if(collision(this.playerBox, this)){
-           if (!this.playerBox.dead) {
-            this.playerBox.dead = true;
-        } else {
-            return
-        }
-    }
-    }
+
+    
 
 
 }

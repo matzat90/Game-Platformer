@@ -121,6 +121,63 @@ const finish = {
 
 const playerSprObj = new Sprite(playerSpr,2,player)    
 
+//Enemy Object:
+
+
+const collisionEnemyArr = [];
+for(let i = 0; i< enemyCollArr.length; i += 300){
+    collisionEnemyArr.push(enemyCollArr.slice(i,i +300));
+}
+
+let collisionBoxEnemyArr = [];
+collisionEnemyArr.forEach((row, y) => {
+    row.forEach((col,x) => {
+        if (col == 15){
+            collisionBoxEnemyArr.push(new CollisionBox({
+                positionX: x*50,
+                positionY: y*50
+            }))
+        }
+    })
+})
+
+let Enemies = [];
+collisionEnemyArr.forEach((row, y) => {
+    row.forEach((col,x) => {
+        if (col == 5){
+            Enemies.push(new golemEnemy({
+                positionX: x*50,
+                positionY: y*50,
+                width: 125,
+                height: 150,
+                collisionBox: collisionBoxEnemyArr,
+                playerBox: player,
+
+            }))
+        }
+    })
+})
+
+let EnemiesSpr = []
+for(i=0; i<Enemies.length; i++){
+    let x = new Sprite(golemSpr,1,Enemies[i])
+    EnemiesSpr.push(x);
+    
+}
+
+const enemyGolem = new golemEnemy({
+    positionX: 1300,
+    positionY: 300,
+    width: 125,
+    height: 150,
+    collisionBox: collisionBoxEnemyArr
+    
+    
+})
+const enemySprObj = new Sprite(golemSpr,1,enemyGolem)
+
+
+
 //Add Sprite for CoinsArr
 const coinsArrSpr = []
 console.log(collisionCoinsArr)
@@ -129,7 +186,7 @@ for(i=0; i<collisionCoinsArr.length; i++){
     coinsArrSpr.push(x);
     
 }
-console.log(coinsArrSpr)
+
 
 const mainBg = new Image
 mainBg.src = "img/bg/BigMap.png"
@@ -160,11 +217,26 @@ let lasttime;
         coinsArrSpr.forEach((el)=> {
             el.drawSpr();
         })
+        collisionBoxEnemyArr.forEach((el) => {
+            el.update()
+        })
+        Enemies.forEach((el)=> {
+            el.update(delta)
+        })
+        EnemiesSpr.forEach((el)=> {
+           el.drawSpr()
+        })
         
         ctx.drawImage(finish.img, finish.x,finish.y)
         finish.fun1()
+        
         player.update(delta);
+        if (!player.dead){
         playerSprObj.drawSpr();
+        } else {
+        ctx.drawImage(playerSprDead,player.x - 50,player.y - 50)
+        }
+        
         //Update Canvas Foreground:
         ctxFr.clearRect(0,0,1600,900)
         ctxFr.font = "48px serif";

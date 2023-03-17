@@ -66,7 +66,20 @@ class Player {
        // ctx.fillStyle = this.cam.color;
        // ctx.fillRect(this.cam.x,this.cam.y,this.cam.width,this.cam.height);
             }
+        } else {
+            this.applyGravity(delta)
+            this.verticalCollision()
+            this.restartTimer = setTimeout(() => {
+                this.dead = false;
+                ctx.translate(this.x - 1300,0)
+                this.reset()
+            }, 1000)
+            
+            
+            
+            
         }
+        
     }
             //Move player and camera Horizontal
             moveX(delta){
@@ -297,6 +310,7 @@ class Player {
                         } 
                     break
                 }
+                
             }
             death(){
                 if(this.y > canvas.height){
@@ -307,14 +321,12 @@ class Player {
                         this.reset()
                     }, 1000)
                     
-                    this.dead = true;
-
-                    
+                 this.dead = true;
                 }
             }
             reset(){
                 this.x = 1300
-                this.y = 100
+                this.y = 0 - this.height;
                 this.velocity.x = 0
                 this.velocity.y = 0
                 this.face = "right"
@@ -324,5 +336,5 @@ class Player {
                 firstPlan2.x = 0
                 firstPlan3.x = 0
             }
-            
+           
 }

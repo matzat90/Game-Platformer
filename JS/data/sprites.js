@@ -22,6 +22,9 @@ playerSprFallR.src = "img/spr_player/FallR.png"
 const playerSprFallL= new Image(150,150)
 playerSprFallL.src = "img/spr_player/FallL.png"
 
+const playerSprDead = new Image(150,150)
+playerSprDead.src = "img/spr_player/Dead.png"
+
 const playerSpr = [
     {
         name: "RunR",
@@ -111,6 +114,17 @@ const playerSpr = [
         offSetY: -26,
         frameSquer: 150
     },
+    {
+        name: "Dead",
+        src: playerSprDead,
+        fr: 1,
+        buffor: 10,
+        width: playerSprDead.width,
+        height: playerSprDead.hegiht,
+        offSetX: 45,
+        offSetY: -50,
+        frameSquer: 150
+    },
 ]
 
 const coinsSprImg = new Image(250,50)
@@ -127,5 +141,36 @@ const coinsSpr = [
         offSetX: 0,
         offSetY: 0,
         frameSquer: 50
+    }
+]
+
+const golemWalkRSprImg = new Image (3600,300)
+golemWalkRSprImg.src = "img/spr_golem/GolemR.png"
+
+const golemWalkLSprImg = new Image (3600,300)
+golemWalkLSprImg.src = "img/spr_golem/GolemL.png"
+
+const golemSpr = [
+    {
+        name: "WalkR",
+        src: golemWalkRSprImg,
+        fr: 12,
+        buffor: 5,
+        width: golemWalkRSprImg.width,
+        height: golemWalkRSprImg.hegiht,
+        offSetX: 70,
+        offSetY: -80,
+        frameSquer: 300
+    },
+    {
+        name: "WalkL",
+        src: golemWalkLSprImg,
+        fr: 12,
+        buffor: 5,
+        width: golemWalkLSprImg.width,
+        height: golemWalkLSprImg.hegiht,
+        offSetX: 70,
+        offSetY: -80,
+        frameSquer: 300
     }
 ]

@@ -120,8 +120,8 @@ const coinsSpr = [
     {
         name: "starIdle",
         src: coinsSprImg,
-        fr: 5,
-        buffor: 10,
+        fr: 6,
+        buffor: 5,
         width: coinsSprImg.width,
         height: coinsSprImg.height,
         offSetX: 0,

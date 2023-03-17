@@ -10,8 +10,8 @@ class CollisionCoinBox {
         
 }
 coinDraw(){
-    ctx.fillStyle = "rgba(0,255,0,.5)"
-    ctx.fillRect(this.x, this.y, this.width,this.height)
+    //ctx.fillStyle = "rgba(0,255,0,.5)"
+    //ctx.fillRect(this.x, this.y, this.width,this.height)
 }
 
 }

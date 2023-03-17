@@ -23,8 +23,10 @@ class Player {
         this.collisionCoins = collisionCoins;
         this.velVerMaxSpeed = 25;
         this.dead = false;
+        this.victory = false;
         this.score = 0;
         this.scoreMax = collisionCoinsArr.length
+        this.restartTimer
         //Jump control section:
         this.jumpPremission = true;
         this.jumpBlock; //blocks jump for Xs
@@ -44,7 +46,10 @@ class Player {
     }
     //Main function:
     update(delta) {
-        if (this.dead == false){
+        if (this.dead  == false){
+            if (this.victory){
+                return
+            } else {
         this.death()
         this.applyGravity(delta);
         this.jump();
@@ -53,12 +58,14 @@ class Player {
         this.moveX(delta);
         this.spriteControl();
         this.collisionCoinsFun()
+        this.collisionFinish()
         this.horizontalCollision(delta);
         
-        ctx.fillStyle ="red";
-        ctx.fillRect(this.x,this.y,this.width,this.height);
-        ctx.fillStyle = this.cam.color;
-        ctx.fillRect(this.cam.x,this.cam.y,this.cam.width,this.cam.height);
+        //ctx.fillStyle ="red";
+       // ctx.fillRect(this.x,this.y,this.width,this.height);
+       // ctx.fillStyle = this.cam.color;
+       // ctx.fillRect(this.cam.x,this.cam.y,this.cam.width,this.cam.height);
+            }
         }
     }
             //Move player and camera Horizontal
@@ -132,15 +139,26 @@ class Player {
                     const curCol = this.collisionCoins[i];
                    
                 if (collision(this, curCol)){
+                    
                     let x = this.collisionCoins.indexOf(curCol)
                     this.collisionCoins.splice(x,1);
                     coinsArrSpr.splice(x,1)
                     this.score ++;
                     
+                    
                 }
             }
             }
-
+            //Collison Finish:
+            collisionFinish(){
+                if (collision(this, finish)){
+                    if (finish.status == true){
+                        
+                        this.victory = true;
+                        console.log(this.victory)
+                    }
+                }
+            }
             //Applys global gravity from main.js
             applyGravity(delta){
                 if (this.velocity.y < this.velVerMaxSpeed){
@@ -283,10 +301,28 @@ class Player {
             death(){
                 if(this.y > canvas.height){
                     
-                    this.y = canvas.height + this.height;
+                    this.restartTimer = setTimeout(() => {
+                        this.dead = false;
+                        ctx.translate(this.x - 1300,0)
+                        this.reset()
+                    }, 1000)
                     
                     this.dead = true;
+
+                    
                 }
+            }
+            reset(){
+                this.x = 1300
+                this.y = 100
+                this.velocity.x = 0
+                this.velocity.y = 0
+                this.face = "right"
+                this.cam.x = this.x + this.width/2 - (1200/2)
+                this.cam.y = this.y - (500 - this.height)
+                firstPlan.x = 0
+                firstPlan2.x = 0
+                firstPlan3.x = 0
             }
             
 }

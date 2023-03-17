@@ -20,13 +20,15 @@ class paraBg {
         }
     }
     draw(delta){
-        if (player.dead == false){
+        if (player.dead == false && player.victory == false){
         this.move(delta);
         ctxBg.drawImage(this.src,this.x,this.y)
         } else {
         ctxBg.drawImage(this.src,this.x,this.y)
-        ctxBg.font = "48px serif";
-        ctxBg.fillText("Game Over", 300, 100);
+            if (player.dead == true){
+            ctxBg.font = "48px serif";
+            ctxBg.fillText("Game Over", 300, 100);
+            }
         }
     }
 }

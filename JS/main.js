@@ -10,6 +10,11 @@ const ctxBg = canvasBg.getContext('2d')
 canvasBg.width = 1600;
 canvasBg.height = 900;
 
+const canvasFr = document.querySelector(".canvas3")
+const ctxFr = canvasFr.getContext('2d')
+canvasFr.width = 1600;
+canvasFr.height = 900;
+
 //Gravity:
 const gravity = 0.25;
 
@@ -17,8 +22,8 @@ const gravity = 0.25;
 
 
 const collisionArr = [];
-for(let i = 0; i< floorArr.length; i += 150){
-    collisionArr.push(floorArr.slice(i,i +150));
+for(let i = 0; i< floorArr.length; i += 300){
+    collisionArr.push(floorArr.slice(i,i +300));
 }
 
 let collisionBoxArr = [];
@@ -58,14 +63,14 @@ const bgCloudsImg = new Image
 bgCloudsImg.src = "img/bg/bg_clouds.png"
 const bgClouds = new autoLoopBg({
     src: bgCloudsImg,
-    velocity: .25
+    velocity: .15
 });
 
 const firstPlanImg = new Image
 firstPlanImg.src = "img/bg/bgP_1.png"
 const firstPlan = new paraBg({
     src: firstPlanImg,
-    velocity: .2,
+    velocity: .1,
     width: 3200
 })
 
@@ -73,7 +78,7 @@ const firstPlanImg2 = new Image
 firstPlanImg2.src = "img/bg/bgP_2.png"
 const firstPlan2 = new paraBg({
     src: firstPlanImg2,
-    velocity: .1,
+    velocity: .05,
     width: 2400
 })
 
@@ -95,7 +100,24 @@ const player = new Player
     collisionBox: collisionBoxArr,
     collisionCoins: collisionCoinsArr
     });
+const finishImg = new Image(75,100)
+finishImg.src = "img/doors/doorC.png"
+const finish = {
+    x: 10000,
+    y: 500,
+    width: 75,
+    height: 100,
+    img: finishImg,
+    status: false,
+    fun1: function() {
+        if (player.score == player.scoreMax){
+            
+            this.status = true
+            finishImg.src = "img/doors/doorO.png"
+        }
+    }
 
+}
 
 const playerSprObj = new Sprite(playerSpr,2,player)    
 
@@ -110,7 +132,7 @@ for(i=0; i<collisionCoinsArr.length; i++){
 console.log(coinsArrSpr)
 
 const mainBg = new Image
-mainBg.src = "img/bg/Map2.png"
+mainBg.src = "img/bg/BigMap.png"
 
 
 //Animation loop:
@@ -139,11 +161,14 @@ let lasttime;
             el.drawSpr();
         })
         
+        ctx.drawImage(finish.img, finish.x,finish.y)
+        finish.fun1()
         player.update(delta);
         playerSprObj.drawSpr();
-        
-        ctxBg.font = "48px serif";
-        ctxBg.fillText(player.score, 10, 100);
+        //Update Canvas Foreground:
+        ctxFr.clearRect(0,0,1600,900)
+        ctxFr.font = "48px serif";
+        ctxFr.fillText(player.score, 10, 100);
         
                 
      }

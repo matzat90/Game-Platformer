@@ -30,6 +30,15 @@
             z-index: 0;
 
         }
+
+        .canvas3 {
+            position: absolute;
+            border: 1px solid black;
+            left: 0;
+            top: 0;
+            z-index: 15;
+
+        }
         .holder {
             position: relative;
             display: flex;
@@ -45,8 +54,10 @@
 </head>
 <body>
     <div class="holder">
+    <canvas class="canvas3"></canvas>
     <canvas class="canvas1"></canvas>
     <canvas class="canvas2"></canvas>
+    
     </div>
     <script src = "JS/data/sprites.js"></script>
     <script src = "JS/data/collisionArr.js"></script>

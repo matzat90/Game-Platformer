@@ -1,4 +1,4 @@
-class golemEnemy {
+class golemEnemy extends Sprite2 {
     constructor
     ({
         positionX: x,
@@ -6,11 +6,34 @@ class golemEnemy {
         width: w,
         height: h,
         collisionBox: collisionBoxEnemyArr,
-       
-        
+        imgSrc: src,
+        imgWid: wid,
+        imgHi: hi,
+        imgFr: fr,
+        imgBuffor: bf,
+        imgOffsetX: offsetX,
+        imgOffsetY: offsetY,
+        imgSq: sq,
+        imgRows: rows,
+        imgName: name,
+        imgPlan: plan,
+        imgType: type
         
     }){
-        
+        super({
+        imgName: name,
+        imgSrc: src,
+        imgWid: wid,
+        imgHi: hi,
+        imgFr: fr,
+        imgBuffor: bf,
+        imgOffsetX: offsetX,
+        imgOffsetY: offsetY,
+        imgSq: sq,
+        imgRows: rows,
+        imgPlan: plan,
+        imgType: type
+        })
         this.x = x
         this.y = y
         this.width = w,
@@ -22,7 +45,7 @@ class golemEnemy {
         }
         this.collisionBox = collisionBoxEnemyArr
         
-        this.face = "left"
+        this.face = "right"
         this.hit;
         this.hitTimer;
     }
@@ -31,9 +54,10 @@ class golemEnemy {
         this.verCollision()
         this.moveX(delta)
         this.horCollision()
-           
+         
         ctx.fillStyle = "red"
         ctx.fillRect(this.x,this.y,this.width,this.height)
+        this.drawSpr()  
     }
 
     applyGravity(delta){
@@ -49,8 +73,8 @@ class golemEnemy {
     
     verCollision(){
         
-        for(i = 0; i < this.collisionBox.length; i++){
-            const curCol = this.collisionBox[i]
+        for(let c = 0; c < this.collisionBox.length; c++){
+            const curCol = this.collisionBox[c]
             if (collision(this,curCol)){
                 
                 this.y = curCol.y - this.height - 0.01;
@@ -62,8 +86,8 @@ class golemEnemy {
 
     horCollision(){
         
-        for(i = 0; i < this.collisionBox.length; i++){
-            const curCol = this.collisionBox[i]
+        for(let c = 0; c < this.collisionBox.length; c++){
+            const curCol = this.collisionBox[c]
             if (collision(this,curCol)){
                 let x = Enemies.indexOf(this)
                 
@@ -72,20 +96,14 @@ class golemEnemy {
                         case "left":
                             this.face = "right"
                             this.x = curCol.x + curCol.width + 0.01
-                            changeSprite({
-                                objectSpr: golemSpr,
-                                object: EnemiesSpr[x],
-                                objectTarget: this
-                                },0)
+                            this.row = 0
+                            
                         break
                         case "right":
                             this.face = "left"
                             this.x = curCol.x - this.width - 0.01
-                            changeSprite({
-                                objectSpr: golemSpr,
-                                object: EnemiesSpr[x],
-                                objectTarget: this
-                                },1)
+                            this.row = 1
+                           
                         break
                     }
                      

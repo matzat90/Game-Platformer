@@ -1,14 +1,39 @@
-class paraBg {
+class paraBg extends Sprite2 {
     constructor({
-        src: src,
+        
         velocity: vel,
-        width: wid,
+        
+        imgName: name,
+            imgSrc: src,
+            imgWid: wid,
+            imgHi: hi,
+            imgFr: fr,
+            imgBuffor: bf,
+            imgOffsetX: offsetX,
+            imgOffsetY: offsetY,
+            imgSq: sq,
+            imgRows: rows,
+            imgPlan: plan,
+            imgType: type
         
     })
     {
-        this.src = src;
+        super({
+            imgName: name,
+            imgSrc: src,
+            imgWid: wid,
+            imgHi: hi,
+            imgFr: fr,
+            imgBuffor: bf,
+            imgOffsetX: offsetX,
+            imgOffsetY: offsetY,
+            imgSq: sq,
+            imgRows: rows,
+            imgPlan: plan,
+            imgType: type
+            })
+        
         this.velocity = vel;
-        this.width = wid;
         this.x = 0;
         this.y = 0;
     }
@@ -16,9 +41,9 @@ class paraBg {
     draw(){
         if (player.dead == false && player.victory == false){
         
-        ctxBg.drawImage(this.src,this.x,this.y)
+        this.drawSpr()
         } else {
-        ctxBg.drawImage(this.src,this.x,this.y)
+        this.drawSpr()
             if (player.dead == true){
             ctxBg.font = "48px serif";
             ctxBg.fillText("Game Over", 300, 100);

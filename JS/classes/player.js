@@ -109,12 +109,12 @@ class Player {
                     
                 if (collision(this, curCol)){
                     
-                    if (control.right || (this.face == "right" || this.face == "left") ){
+                    if (control.right){
                        
                     this.x = curCol.x - this.width -1;
                         
                     }
-                    if (control.left || (this.face == "right" || this.face == "left")){
+                    if (control.left){
                     this.x = curCol.x + curCol.width + 1;
                         
                     }
@@ -131,7 +131,7 @@ class Player {
                     
                     let x = this.collisionCoins.indexOf(curCol)
                     this.collisionCoins.splice(x,1);
-                    coinsArrSpr.splice(x,1)
+                    
                     this.score ++;
                     
                     
@@ -312,8 +312,8 @@ class Player {
             collisionEnemy(){
                 
                 
-                for (i =0; i<this.collisionEnemyGolem.length; i++){
-                const curCol = this.collisionEnemyGolem[i]
+                for (let c =0; c<this.collisionEnemyGolem.length; c++){
+                const curCol = this.collisionEnemyGolem[c]
                 
                 if(collision(this,curCol,) && !this.dead){
                     this.hit = true;

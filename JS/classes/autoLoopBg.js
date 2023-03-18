@@ -1,11 +1,35 @@
-class autoLoopBg {
+class autoLoopBg extends Sprite2 {
     constructor
     ({
-        src: src,
-        velocity: vel
+        velocity: vel,
+        imgSrc: src,
+        imgWid: wid,
+        imgHi: hi,
+        imgFr: fr,
+        imgBuffor: bf,
+        imgOffsetX: offsetX,
+        imgOffsetY: offsetY,
+        imgSq: sq,
+        imgRows: rows,
+        imgName: name,
+        imgPlan: plan,
+        imgType: type
     })
     {
-        this.src = src;
+        super({
+            imgName: name,
+            imgSrc: src,
+            imgWid: wid,
+            imgHi: hi,
+            imgFr: fr,
+            imgBuffor: bf,
+            imgOffsetX: offsetX,
+            imgOffsetY: offsetY,
+            imgSq: sq,
+            imgRows: rows,
+            imgPlan: plan,
+            imgType: type
+        })
         this.velocity = vel;
         this.x = 0;
         this.y = 0;
@@ -19,7 +43,7 @@ class autoLoopBg {
     }
     draw(delta){
         this.move(delta);
-        ctxBg.drawImage(this.src,this.x,this.y) 
+        this.drawSpr();
         
     }
 }

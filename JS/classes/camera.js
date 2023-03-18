@@ -44,7 +44,7 @@ followPlayer(delta){
             canvasPositionX -= canvasStep * this.camSpeed;
             ctx.translate(-canvasStep * this.camSpeed,0)
             paralaxBg.forEach((el)=>{
-                if (el.x + el.width > canvasBg.width){
+                if (el.x + el.img.width > canvasBg.width){
                 el.x -= delta*el.velocity
                 }
             })

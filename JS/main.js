@@ -27,14 +27,13 @@ let canvasPositionZero = -521;
 let canvasPositionX = 0;
 
 
-//CollisionBox Array:
-
-
+//Collisions Arrays:
+// Full Map Draft in rows and col:
 const collisionArr = [];
 for(let i = 0; i< floorArr.length; i += 300){
     collisionArr.push(floorArr.slice(i,i +300));
 }
-
+// Floors Objects:
 let collisionBoxArr = [];
 collisionArr.forEach((row, y) => {
     row.forEach((col,x) => {
@@ -47,14 +46,27 @@ collisionArr.forEach((row, y) => {
     })
 })
 
-
+//Coins Objects:
 let collisionCoinsArr = []
 collisionArr.forEach((row, y) => {
     row.forEach((col,x) => {
         if (col == 10){
             collisionCoinsArr.push(new CollisionCoinBox({
                 positionX: x*50,
-                positionY: y*50
+                positionY: y*50,
+                imgName: "Coins",
+                imgSrc: "img/spr_star/stars.png",
+                imgWid: 250,
+                imgHi: 50,
+                imgFr: 6,
+                imgBuffor: 10,
+                imgOffsetX: 0,
+                imgOffsetY: 0,
+                imgSq: 50,
+                imgRows: 1,
+                imgPlan: ctx,
+                imgType: "obj"
+                
             }))
         }
     })
@@ -64,39 +76,76 @@ collisionArr.forEach((row, y) => {
 //Map size:
 const mapSize = collisionArr[0].length*50
 
-//Instances Bg-Canvas:
+//INSTANCEC BG-CANVAS:
+//Sky background:
 const bgSky = new Image
 bgSky.src = "img/bg/bg_sky.png"
 
-const bgCloudsImg = new Image
-bgCloudsImg.src = "img/bg/bg_clouds.png"
+//Clouds autoLoop Object:
 const bgClouds = new autoLoopBg({
-    src: bgCloudsImg,
-    velocity: .15
+    velocity: .15,
+    imgName: "Clouds",
+    imgSrc: "img/bg/bg_clouds.png",
+    imgWid: 3200,
+    imgHi: 900,
+    imgFr: 1,
+    imgBuffor: 1,
+    imgOffsetX: 0,
+    imgOffsetY: 0,
+    imgSq: 900,
+    imgRows: 1,
+    imgPlan: ctxBg,
+    imgType: "static"
 });
-
-const firstPlanImg = new Image
-firstPlanImg.src = "img/bg/bgP_1.png"
+//ParalaxBg:
 const firstPlan = new paraBg({
-    src: firstPlanImg,
+    //src: firstPlanImg,
     velocity: .1,
-    width: 3200
+    imgName: "Trees",
+    imgSrc: "img/bg/bgP_1.png",
+    imgWid: 3200,
+    imgHi: 900,
+    imgFr: 1,
+    imgBuffor: 1,
+    imgOffsetX: 0,
+    imgOffsetY: 0,
+    imgSq: 3200,
+    imgRows: 1,
+    imgPlan: ctxBg,
+    imgType: "static"
 })
-
-const firstPlanImg2 = new Image
-firstPlanImg2.src = "img/bg/bgP_2.png"
 const firstPlan2 = new paraBg({
-    src: firstPlanImg2,
+   
     velocity: .05,
-    width: 2400
+    imgName: "Plains",
+    imgSrc: "img/bg/bgP_2.png",
+    imgWid: 2400,
+    imgHi: 900,
+    imgFr: 1,
+    imgBuffor: 1,
+    imgOffsetX: 0,
+    imgOffsetY: 0,
+    imgSq: 2400,
+    imgRows: 1,
+    imgPlan: ctxBg,
+    imgType: "static"
+  
 })
-
-const firstPlanImg3 = new Image
-firstPlanImg3.src = "img/bg/bgP_3.png"
 const firstPlan3 = new paraBg({
-    src: firstPlanImg3,
+   
     velocity: .05,
-    width: 2400
+    imgName: "Moutains",
+    imgSrc: "img/bg/bgP_3.png",
+    imgWid: 2400,
+    imgHi: 900,
+    imgFr: 1,
+    imgBuffor: 1,
+    imgOffsetX: 0,
+    imgOffsetY: 0,
+    imgSq: 2400,
+    imgRows: 1,
+    imgPlan: ctxBg,
+    imgType: "static"
 })
 
 //Instances Game-Canvas:
@@ -121,17 +170,11 @@ const finish = {
 }
 
 
-
-
-
 //Enemy Object:
-
-
 const collisionEnemyArr = [];
 for(let i = 0; i< enemyCollArr.length; i += 300){
     collisionEnemyArr.push(enemyCollArr.slice(i,i +300));
 }
-
 let collisionBoxEnemyArr = [];
 collisionEnemyArr.forEach((row, y) => {
     row.forEach((col,x) => {
@@ -143,7 +186,6 @@ collisionEnemyArr.forEach((row, y) => {
         }
     })
 })
-
 let Enemies = [];
 collisionEnemyArr.forEach((row, y) => {
     row.forEach((col,x) => {
@@ -151,9 +193,21 @@ collisionEnemyArr.forEach((row, y) => {
             Enemies.push(new golemEnemy({
                 positionX: x*50,
                 positionY: y*50,
-                width: 125,
-                height: 150,
+                width: 80,
+                height: 110,
                 collisionBox: collisionBoxEnemyArr,
+                imgName: "WalkR",
+                imgSrc: "img/spr_golem/enGolSpr.png",
+                imgWid: 2700,
+                imgHi: 450,
+                imgFr: 12,
+                imgBuffor: 10,
+                imgOffsetX: -70,
+                imgOffsetY: -60,
+                imgSq: 225,
+                imgRows: 2,
+                imgPlan: ctx,
+                imgType: "obj"
                 
 
             }))
@@ -161,23 +215,7 @@ collisionEnemyArr.forEach((row, y) => {
     })
 })
 
-let EnemiesSpr = []
-for(i=0; i<Enemies.length; i++){
-    let x = new Sprite(golemSpr,1,Enemies[i])
-    EnemiesSpr.push(x);
-    
-}
 
-const enemyGolem = new golemEnemy({
-    positionX: 1300,
-    positionY: 300,
-    width: 125,
-    height: 150,
-    collisionBox: collisionBoxEnemyArr
-    
-    
-})
-const enemySprObj = new Sprite(golemSpr,1,enemyGolem)
 
 //Player:
 const player = new Player 
@@ -196,15 +234,15 @@ const playerSprObj = new Sprite(playerSpr,2,player)
 const camera = new Camera({positionX: player.x - 500, positionY: player.y, width: 1300, height: 500})
 
 //Add Sprite for CoinsArr
-const coinsArrSpr = []
-console.log(collisionCoinsArr)
-for(i=0; i<collisionCoinsArr.length; i++){
-    let x = new Sprite(coinsSpr,0,collisionCoinsArr[i])
-    coinsArrSpr.push(x);
-    
-}
+///const coinsArrSpr = []
+//console.log(collisionCoinsArr)
+//for(i=0; i<collisionCoinsArr.length; i++){
+//    let x = new Sprite(coinsSpr,0,collisionCoinsArr[i])
+//    coinsArrSpr.push(x);
+//    
+//}
 
-
+// Main Map Image:
 const mainBg = new Image
 mainBg.src = "img/bg/BigMap.png"
 
@@ -231,18 +269,16 @@ let lasttime;
         collisionCoinsArr.forEach((el)=> {
             el.coinDraw();
         })
-        coinsArrSpr.forEach((el)=> {
-            el.drawSpr();
-        })
+        //coinsArrSpr.forEach((el)=> {
+        //    el.drawSpr();
+        //})
         collisionBoxEnemyArr.forEach((el) => {
             el.update()
         })
         Enemies.forEach((el)=> {
             el.update(delta)
         })
-        EnemiesSpr.forEach((el)=> {
-           el.drawSpr()
-        })
+        
         
         ctx.drawImage(finish.img, finish.x,finish.y)
         finish.fun1()

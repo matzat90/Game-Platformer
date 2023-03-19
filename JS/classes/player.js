@@ -1,4 +1,4 @@
-class Player {
+class Player extends Sprite2 {
     constructor
         ({
         positionX: x,
@@ -7,9 +7,35 @@ class Player {
         height: height,
         collisionBox: collisionBox,
         collisionCoins: collisionCoins,
-        collisionEnemyGolem: collisionEnemyGolem
+        collisionEnemyGolem: collisionEnemyGolem,
+        imgName: name,
+            imgSrc: src,
+            imgWid: wid,
+            imgHi: hi,
+            imgFr: fr,
+            imgBuffor: bf,
+            imgOffsetX: offsetX,
+            imgOffsetY: offsetY,
+            imgSq: sq,
+            imgRows: rows,
+            imgPlan: plan,
+            imgType: type
         })
     {
+        super({
+            imgName: name,
+            imgSrc: src,
+            imgWid: wid,
+            imgHi: hi,
+            imgFr: fr,
+            imgBuffor: bf,
+            imgOffsetX: offsetX,
+            imgOffsetY: offsetY,
+            imgSq: sq,
+            imgRows: rows,
+            imgPlan: plan,
+            imgType: type
+            })
         this.x = x;
         this.y = y;
         this.width = width;
@@ -29,16 +55,17 @@ class Player {
         this.score = 0;
         this.scoreMax = collisionCoinsArr.length
         this.restartTimer
+        this.loopSprite = false;
         //Hit:
         this.hit = false;
-        this.hitTime = 300;
+        this.hitTime = 100;
         this.hitTimer;
         //Jump control section:
         this.jumpPremission = true;
         this.jumpBlock; //blocks jump for Xs
-        this.jumpBlockTimer = 100;
+        this.jumpBlockTimer = 300;
         this.jumpCount = 0; // jump control
-        this.jumpMax = 20; // jump max distance
+        this.jumpMax = 25; // jump max distance
         
 
     }
@@ -49,34 +76,43 @@ class Player {
             if (this.victory){
                 return
             } else {
-        this.death()
+        
+        this.drawSpr()
         this.applyGravity(delta);
         this.jump();
         this.verticalCollision();
         
         this.moveX(delta);
+        
         this.spriteControl();
+        //ctx.fillStyle ="red";
+        //ctx.fillRect(this.x,this.y,this.width,this.height);
+        
         this.collisionCoinsFun()
         this.collisionFinish()
         this.collisionEnemy()
         this.horizontalCollision(delta);
         
-        //ctx.fillStyle ="red";
-       // ctx.fillRect(this.x,this.y,this.width,this.height);
+        
        // ctx.fillStyle = this.cam.color;
        // ctx.fillRect(this.cam.x,this.cam.y,this.cam.width,this.cam.height);
             }
         } else {
             if (this.dead){
+            this.drawSpr()
+            this.spriteControl()
             this.applyGravity(delta)
             this.verticalCollision()
+            
             } else if (this.hit){
+                this.spriteControl();
+                this.drawSpr()
             this.applyGravity(delta)
             this.verticalCollision()
-            this.moveX(delta)
             this.horizontalCollision(delta);
+            this.moveX(delta)
             this.y -= 10
-            console.log("uderzony")    
+            
             }
             //this.restartTimer = setTimeout(() => {
                 //this.dead = false;
@@ -133,7 +169,7 @@ class Player {
                     this.collisionCoins.splice(x,1);
                     
                     this.score ++;
-                    
+                    starsDis.innerHTML = player.score
                     
                 }
             }
@@ -156,6 +192,12 @@ class Player {
                 this.velocity.y == this.velVerMaxSpeed;
                 }
                 this.y += gravity*delta*this.velocity.y;
+                if (player.y > canvas.height){
+                    if (!player.dead){
+                    player.dead = true;
+                    timerGameOver()
+                    }
+                }
                 
             }
 
@@ -165,14 +207,15 @@ class Player {
                 if (this.jumpCount < this.jumpMax){
                     this.y -= 26;
                     this.jumpCount ++;
+                    
+                    
                 }
                 else {
                     control.up = false;
-                    this.jumpPremission = false;
-                    this.jumpBlock = setTimeout(()=>{
-                        this.jumpPremission = true;
-                    },this.jumpBlockTimer)
+                    this.jumpFalse()
                 }
+              } else {
+                
               }
             }
             //Collision Verticly:
@@ -181,7 +224,8 @@ class Player {
                     const curCol = this.collisionBox[i];
                     
                 if (collision(this, curCol)){
-                    if (this.velocity.y > 0 && control.up == false){
+                    
+                    if (this.velocity.y > 0 && !control.up){
                         
                         this.jumpCount = 0;
                         this.velocity.y = 0;
@@ -190,11 +234,8 @@ class Player {
                     if (this.velocity.y > 0 && control.up){
                         
                         this.y = curCol.y + 50 + 0.01;
-                        this.velocity.y = 0;
-                        this.jumpPremission = false;
-                        this.jumpBlock = setTimeout(()=>{
-                            this.jumpPremission = true;
-                        },this.jumpBlockTimer)
+                        this.velocity.y = 5;
+                        this.jumpFalse()
                         control.up = false;
                     }
                 }
@@ -202,89 +243,147 @@ class Player {
             }
             //Sprite Control:
             spriteControl(){
+                //console.log(this.hit)
+                //console.log(this.imgName, this.img.width, this.frames, this.row)    
                 switch(this.face){
                     case "right":
-                        if (this.velocity.y != 0 && control.up && playerSprObj != "JumpR"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },4)
-                        }else if (this.velocity.y != 0 && control.up && control.right && playerSprObj != "JumpR"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },4)
-                        }else if (this.velocity.y != 0 && !control.up && playerSprObj != "FallR"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },6)
+                        if (this.dead){
                             
-                        }else if (this.velocity.y != 0 && !control.up && control.right && playerSprObj != "FallR"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },6)
+                            if (this.imgName == "DeadR" && this.loopSprite && this.curFr >= 4){
+                            this.curFr = 5
+                            this.counter = 0
+                            }
+                            else if (this.imgName != "DeadR" && !this.loopSprite){
                             
-                        }else if (!control.right && !control.left && !control.up && playerSprObj.name != "IdleR"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },2)
-                        }else if (control.right && !control.up && playerSprObj.name != "RunR"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },0)
-                        } 
+                            this.row = 8
+                            this.imgName = "DeadR"
+                            this.frames = 5
+                            this.img.width = 750
+                            this.curFr = 0
+                            this.counter = 0
+                            this.loopSprite = true
+                            } 
+                            
+                        } else if (!player.dead) {
+                        if (this.velocity.y != 0 && control.up && this.imgName != "JumpR"){
+                            this.row = 2
+                            this.imgName = "JumpR"
+                            this.frames = 2
+                            this.img.width = 300
+                            this.curFr = 0
+                            this.counter = 0
+                            return
+                        }else if (this.velocity.y != 0 && control.up && control.right && this.imgName != "JumpR"){
+                            this.row = 2
+                            this.imgName = "JumpR"
+                            this.frames = 2
+                            this.img.width = 300
+                            this.curFr = 0
+                            this.counter = 0
+                            return
+                        }else if (this.velocity.y != 0 && !control.up && this.imgName != "FallR"){
+                            this.row = 3
+                            this.imgName = "FallR"
+                            this.frames = 2
+                            this.img.width = 300
+                            this.curFr = 0
+                            this.counter = 0
+                            return
+                        }else if (this.velocity.y != 0 && !control.up && control.right && this.imgName != "FallR"){
+                            this.row = 3
+                            this.imgName = "FallR"
+                            this.frames = 2
+                            this.img.width = 300
+                            this.curFr = 0
+                            this.counter = 0
+                            return
+                        }else if (this.velocity.y <= 0 && !control.right && !control.left && !control.up && this.imgName != "IdleR"){
+                            this.row = 1
+                            this.imgName = "IdleR"
+                            this.frames = 4
+                            this.img.width = 600
+                            this.curFr = 0
+                            this.counter = 0
+                            return
+                        }else if (this.velocity.y <= 0 && control.right && !control.up && this.imgName != "RunR"){
+                            this.row = 0
+                            this.imgName = "RunR"
+                            this.frames = 6
+                            this.img.width = 900
+                            this.curFr = 0
+                            this.counter = 0
+                            return
+                        }
+                        }
                     break
                     case "left":
-                        if (this.velocity.y != 0 && control.up && playerSprObj != "JumpL"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },5)
-                        }else if (this.velocity.y != 0 && control.up && control.left && playerSprObj != "JumpL"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },5)
-                        }else if (this.velocity.y != 0 && !control.up && playerSprObj != "FallL"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },7)
+                        if (this.dead){
+                        if (this.imgName == "DeadL" && this.loopSprite && this.curFr >= 4){
+                            this.curFr = 5
+                            this.counter = 0
+                            }
+                            else if (this.imgName != "DeadL" && !this.loopSprite){
                             
-                        }else if (this.velocity.y != 0 && !control.up && control.left && playerSprObj != "FallL"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },7)
+                            this.row = 9
+                            this.imgName = "DeadL"
+                            this.frames = 5
+                            this.img.width = 750
+                            this.curFr = 0
+                            this.counter = 0
+                            this.loopSprite = true
+                            } 
+                        } else {if (this.velocity.y != 0 && control.up && this.imgName != "JumpL"){
+                            this.row = 6
+                            this.imgName = "JumpL"
+                            this.frames = 2
+                            this.img.width = 300
+                            this.curFr = 0
+                            this.counter = 0
+                            return
+                        }else if (this.velocity.y != 0 && control.up && control.left && this.imgName != "JumpL"){
+                            this.row = 6
+                            this.imgName = "JumpL"
+                            this.frames = 2
+                            this.img.width = 300
+                            this.curFr = 0
+                            this.counter = 0
+                            return
+                        }else if (this.velocity.y != 0 && !control.up && this.imgName != "FallL"){
+                            this.row = 7
+                            this.imgName = "FallL"
+                            this.frames = 2
+                            this.img.width = 300
+                            this.curFr = 0
+                            this.counter = 0
+                            return
                             
-                        }else if (!control.right && !control.left && !control.up && playerSprObj.name != "IdleL"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },3)
-                        }else if (control.left && !control.up && playerSprObj.name != "RunL"){
-                            changeSprite({
-                            objectSpr: playerSpr,
-                            object: playerSprObj,
-                            objectTarget: player
-                            },1)
+                        }else if (this.velocity.y != 0 && !control.up && control.left && this.imgName != "FallL"){
+                            this.row = 7
+                            this.imgName = "FallL"
+                            this.frames = 2
+                            this.img.width = 300
+                            this.curFr = 0
+                            this.counter = 0
+                            return
+                        }else if (this.velocity.y <= 0 && !control.right && !control.left && !control.up && this.imgName != "IdleL"){
+                            this.row = 5
+                            this.imgName = "IdleL"
+                            this.frames = 4
+                            this.img.width = 600
+                            this.curFr = 0
+                            this.counter = 0
+                            return
+                        }else if (this.velocity.y <= 0 && control.left && !control.up && this.imgName!= "RunL"){
+                            this.row = 4
+                            this.imgName = "RunL"
+                            this.frames = 6
+                            this.img.width = 900
+                            this.curFr = 0
+                            this.counter = 0
+                            return
                         } 
                     break
+                        }
                 }
                 
             }
@@ -319,21 +418,52 @@ class Player {
                     this.hit = true;
                     switch (this.face){
                        case "right":
+                        if (curCol.x < this.x){
+                        this.velocity.x = 1
+                            this.hitTimer = setTimeout(()=>{
+                                this.velocity.x = 0
+                                this.dead = true
+                                this.hit = false
+                                timerGameOver()
+                            },this.hitTime)
+                        } else {
                         this.velocity.x = -1
                         this.hitTimer = setTimeout(()=>{
                             this.velocity.x = 0
-                            this.hit = false;
+                            this.dead = true
+                            this.hit = false
+                            timerGameOver()
                         },this.hitTime)
+                        }
                         break
                         case "left":
+                            if (curCol.x > this.x){
+                                this.velocity.x = -1
+                                    this.hitTimer = setTimeout(()=>{
+                                        this.velocity.x = 0
+                                        this.dead = true
+                                        this.hit = false
+                                        timerGameOver()
+                                    },this.hitTime)
+                                } else {
                         this.velocity.x = 1
                         this.hitTimer = setTimeout(()=>{
                             this.velocity.x = 0
-                            this.hit = false;
+                            this.dead = true
+                            this.hit = false
+                            timerGameOver()
                         },this.hitTime)
+                    }
                         break
                     }
                 }
                 }
+            }
+
+            jumpFalse(){
+                this.jumpPremission = false;
+                        this.jumpBlock = setTimeout(()=>{
+                        this.jumpPremission = true;
+                    },this.jumpBlockTimer)
             }
 }

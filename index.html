@@ -5,7 +5,49 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Platformer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/f80fe1628b.js" crossorigin="anonymous"></script>
     <style>
+        .color-red{
+            color: red;
+        }
+
+        .color-white{
+            color:white;
+        }
+
+        .anim-blink{
+            animation: Blink 2s infinite linear;
+        }
+        @keyframes Blink{
+            0%{
+                opacity: 1;
+            }
+            50%{
+                opacity: 1;
+            }
+            75%{
+                opacity: 0;
+            }
+            100%{
+                opacity: 1;
+            }
+        }
+
+        .anim-OnceFadeIn {
+            animation: OnceFadeIn 1s forwards linear;
+        }
+        @keyframes OnceFadeIn{
+                0%{opacity: 0;}
+                100%{opacity: 100%;}
+            }
+        .displayNone{
+            display: none;
+        }
+
         body {
             display: flex;
             align-items: center;
@@ -13,6 +55,9 @@
             width: 100%;
             padding: 0;
             margin: 0;
+            background: black;
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 5px;
         }
         .canvas1 {
             position: absolute;
@@ -48,8 +93,94 @@
             margin: auto;
             width: 1600px;
             height: 900px;
+            user-select: none;
         }
 
+        .holder:hover{
+            cursor: none;
+        }
+        .bar{
+            position: absolute;
+            width: 100%;
+            height: 60px;
+            top: -60px;
+            background-color: black;
+            
+            box-sizing: border-box;
+            color: white;
+            line-height: 60px;
+            font-size: 2.4rem;
+        }
+            .bar-stars{
+            width: 200px;
+            height: 100%;
+            background-color: black;
+            position: absolute;
+            top:0;
+            left:0;
+            
+            box-sizing: border-box;
+            text-align: left;
+            display: flex;
+            flex-direction: row;
+            
+            }
+                .bar-star-con{
+                    margin-left: 10px;
+                }
+
+            .bar-timer{
+            width: 800px;
+            height: 100%;
+            background-color: black;
+            position: absolute;
+            top:0;
+            transform: translate(-50%,0);
+            left:50%;
+            
+            box-sizing: border-box;
+            text-align: center;
+            }
+
+            .bar-level{
+            width: 200px;
+            height: 100%;
+            background-color: black;
+            position: absolute;
+            top:0;
+            right: 0;
+            
+            box-sizing: border-box;
+            text-align: right;
+            }
+        img {
+            margin-bottom: 10px;
+        }
+
+        .info{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10rem;
+            z-index: 20;
+        }
+            .info-dead{
+                color: red;
+                font-family: 'Creepster', cursive;
+                
+                              
+            }
+
+            
+            .info-win{
+                color: white;
+                
+            }
     </style>
 </head>
 <body>
@@ -57,6 +188,15 @@
     <canvas class="canvas3"></canvas>
     <canvas class="canvas1"></canvas>
     <canvas class="canvas2"></canvas>
+    <div class="bar">
+        <div class="bar-stars"><img src="img/spr_star/starIcon.png" alt="starIcon"><div class="bar-star-con">0</div></div>
+        <div class="bar-timer">100</div>
+        <div class="bar-level">Level 1</div>
+    </div>
+    <div class="info">
+        <div class="info-dead displayNone">You Died</div>
+        <div class="info-win displayNone">You Win!</div>
+    </div>
     
     </div>
     <script src="JS/classes/sprite2.js"></script>
@@ -65,7 +205,6 @@
     <script src="JS/utils/controls.js"></script>
     <script src="JS/utils/functions.js"></script>
     <script src="JS/classes/sprite.js"></script>
-   
     <script src="JS/classes/golemEnemy.js"></script>
     <script src="JS/classes/player.js"></script>
     <script src="JS/classes/camera.js"></script>
@@ -74,5 +213,6 @@
     <script src="JS/classes/autoLoopBg.js"></script>
     <script src="JS/classes/paraBg.js"></script>
     <script src="JS/main.js"></script>
+    <script src="JS/utils/bar.js"></script>
 </body>
 </html>

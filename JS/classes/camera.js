@@ -15,8 +15,8 @@ class Camera {
 }
 
 update(delta){
-    ctx.fillStyle = "rgba(0,255,0,.5)"
-    ctx.fillRect(this.x, this.y, this.width, this.height)
+    //ctx.fillStyle = "rgba(0,255,0,.5)"
+    //ctx.fillRect(this.x, this.y, this.width, this.height)
     this.followPlayer(delta)
     
 }
@@ -28,7 +28,7 @@ followPlayer(delta){
     let x = this.width/2 - player.width/2
     let camSpeed = 1;
     let canvasStep = delta*camSpeed;
-    const paralaxBg = [firstPlan,firstPlan2,firstPlan3]
+    const paralaxBg = [firstPlan,firstPlan2]
     
     // Set camera scroll directrion:
     if (distance > x){

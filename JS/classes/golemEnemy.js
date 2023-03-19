@@ -39,7 +39,7 @@ class golemEnemy extends Sprite2 {
         this.width = w,
         this.height = h
         this.velocity = {
-            x: 0.25,
+            x: 0.04*randomOneToThree,
             y: 0,
             yMax: 25
         }
@@ -55,8 +55,8 @@ class golemEnemy extends Sprite2 {
         this.moveX(delta)
         this.horCollision()
          
-        ctx.fillStyle = "red"
-        ctx.fillRect(this.x,this.y,this.width,this.height)
+        //ctx.fillStyle = "red"
+        //ctx.fillRect(this.x,this.y,this.width,this.height)
         this.drawSpr()  
     }
 

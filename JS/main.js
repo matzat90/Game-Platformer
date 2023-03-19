@@ -15,6 +15,9 @@ const ctxFr = canvasFr.getContext('2d')
 canvasFr.width = 1600;
 canvasFr.height = 900;
 
+//Randomize Numer 1-3:
+let randomOneToThree = 0;
+
 //Gravity:
 const gravity = 0.25;
 
@@ -37,7 +40,7 @@ for(let i = 0; i< floorArr.length; i += 300){
 let collisionBoxArr = [];
 collisionArr.forEach((row, y) => {
     row.forEach((col,x) => {
-        if (col == 15){
+        if (col == 2){
             collisionBoxArr.push(new CollisionBox({
                 positionX: x*50,
                 positionY: y*50
@@ -50,28 +53,34 @@ collisionArr.forEach((row, y) => {
 let collisionCoinsArr = []
 collisionArr.forEach((row, y) => {
     row.forEach((col,x) => {
-        if (col == 10){
+        if (col == 3){
             collisionCoinsArr.push(new CollisionCoinBox({
                 positionX: x*50,
                 positionY: y*50,
                 imgName: "Coins",
                 imgSrc: "img/spr_star/stars.png",
-                imgWid: 250,
+                imgWid: 400,
                 imgHi: 50,
-                imgFr: 6,
+                imgFr: 8,
                 imgBuffor: 10,
-                imgOffsetX: 0,
-                imgOffsetY: 0,
+                imgOffsetX: -10,
+                imgOffsetY: -10,
                 imgSq: 50,
                 imgRows: 1,
                 imgPlan: ctx,
                 imgType: "obj"
                 
+                
             }))
+            
         }
     })
 })
 
+for (i=0; i< collisionCoinsArr.length; i++){
+    collisionCoinsArr[i].curFr = Math.floor(Math.random()*8)
+    
+}
 
 //Map size:
 const mapSize = collisionArr[0].length*50
@@ -80,6 +89,12 @@ const mapSize = collisionArr[0].length*50
 //Sky background:
 const bgSky = new Image
 bgSky.src = "img/bg/bg_sky.png"
+
+const static1 = new Image
+static1.src = "img/bg/1static.png"
+
+const static2 = new Image
+static2.src = "img/bg/2static.png"
 
 //Clouds autoLoop Object:
 const bgClouds = new autoLoopBg({
@@ -97,10 +112,28 @@ const bgClouds = new autoLoopBg({
     imgPlan: ctxBg,
     imgType: "static"
 });
+
+const bgClouds2 = new autoLoopBg({
+    velocity: .25,
+    imgName: "Clouds",
+    imgSrc: "img/bg/bg_clouds2.png",
+    imgWid: 3200,
+    imgHi: 900,
+    imgFr: 1,
+    imgBuffor: 1,
+    imgOffsetX: 0,
+    imgOffsetY: 0,
+    imgSq: 900,
+    imgRows: 1,
+    imgPlan: ctxBg,
+    imgType: "static"
+});
+
+
 //ParalaxBg:
 const firstPlan = new paraBg({
     //src: firstPlanImg,
-    velocity: .1,
+    velocity: .08,
     imgName: "Trees",
     imgSrc: "img/bg/bgP_1.png",
     imgWid: 3200,
@@ -131,22 +164,7 @@ const firstPlan2 = new paraBg({
     imgType: "static"
   
 })
-const firstPlan3 = new paraBg({
-   
-    velocity: .05,
-    imgName: "Moutains",
-    imgSrc: "img/bg/bgP_3.png",
-    imgWid: 2400,
-    imgHi: 900,
-    imgFr: 1,
-    imgBuffor: 1,
-    imgOffsetX: 0,
-    imgOffsetY: 0,
-    imgSq: 2400,
-    imgRows: 1,
-    imgPlan: ctxBg,
-    imgType: "static"
-})
+
 
 //Instances Game-Canvas:
 
@@ -172,13 +190,13 @@ const finish = {
 
 //Enemy Object:
 const collisionEnemyArr = [];
-for(let i = 0; i< enemyCollArr.length; i += 300){
-    collisionEnemyArr.push(enemyCollArr.slice(i,i +300));
+for(let i = 0; i< floorArr.length; i += 300){
+    collisionEnemyArr.push(floorArr.slice(i,i +300));
 }
 let collisionBoxEnemyArr = [];
 collisionEnemyArr.forEach((row, y) => {
     row.forEach((col,x) => {
-        if (col == 15){
+        if (col == 2 || col == 5){
             collisionBoxEnemyArr.push(new CollisionBox({
                 positionX: x*50,
                 positionY: y*50
@@ -187,9 +205,11 @@ collisionEnemyArr.forEach((row, y) => {
     })
 })
 let Enemies = [];
-collisionEnemyArr.forEach((row, y) => {
+collisionArr.forEach((row, y) => {
     row.forEach((col,x) => {
-        if (col == 5){
+        if (col == 4){
+            randomOneToThree = Math.floor(Math.random()*3)+1
+            console.log(randomOneToThree)
             Enemies.push(new golemEnemy({
                 positionX: x*50,
                 positionY: y*50,
@@ -226,26 +246,29 @@ const player = new Player
     height:99,
     collisionBox: collisionBoxArr,
     collisionCoins: collisionCoinsArr,
-    collisionEnemyGolem: Enemies
+    collisionEnemyGolem: Enemies,
+    imgName: "RunR",
+    imgSrc: "img/spr_player/plSpr.png",
+    imgWid: 900,
+    imgHi: 1500,
+    imgFr: 6,
+    imgBuffor: 10,
+    imgOffsetX: -50,
+    imgOffsetY: -23,
+    imgSq: 150,
+    imgRows: 10,
+    imgPlan: ctx,
+    imgType: "obj"
+
     });
-const playerSprObj = new Sprite(playerSpr,2,player)
+
 
 //Camera:
 const camera = new Camera({positionX: player.x - 500, positionY: player.y, width: 1300, height: 500})
 
-//Add Sprite for CoinsArr
-///const coinsArrSpr = []
-//console.log(collisionCoinsArr)
-//for(i=0; i<collisionCoinsArr.length; i++){
-//    let x = new Sprite(coinsSpr,0,collisionCoinsArr[i])
-//    coinsArrSpr.push(x);
-//    
-//}
-
 // Main Map Image:
 const mainBg = new Image
 mainBg.src = "img/bg/BigMap.png"
-
 
 //Animation loop:
 let lasttime;
@@ -256,8 +279,10 @@ let lasttime;
         ctxBg.clearRect(0,0,canvasBg.width,canvasBg.height) 
         ctxBg.drawImage(bgSky,0,0);
         bgClouds.draw(delta)
-        firstPlan3.draw()
+        bgClouds2.draw(delta)
+        ctxBg.drawImage(static2,0,0);
         firstPlan2.draw()
+        ctxBg.drawImage(static1,0,0);
         firstPlan.draw()
         //Update Canvas-Game section:
         ctx.clearRect(0,0,mapSize,canvas.height) //If map is not scaled than clear width and heigt must be equal to all map size.
@@ -284,16 +309,11 @@ let lasttime;
         finish.fun1()
         camera.update(delta)
         player.update(delta);
-        if (!player.dead){
-        playerSprObj.drawSpr();
-        } else {
-        ctx.drawImage(playerSprDead,player.x - 50,player.y - 50)
-        }
+        
         
         //Update Canvas Foreground:
         ctxFr.clearRect(0,0,1600,900)
-        ctxFr.font = "48px serif";
-        ctxFr.fillText(player.score, 10, 100);
+        
         
                 
      }

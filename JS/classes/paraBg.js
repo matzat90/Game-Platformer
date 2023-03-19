@@ -39,15 +39,6 @@ class paraBg extends Sprite2 {
     }
    
     draw(){
-        if (player.dead == false && player.victory == false){
-        
         this.drawSpr()
-        } else {
-        this.drawSpr()
-            if (player.dead == true){
-            ctxBg.font = "48px serif";
-            ctxBg.fillText("Game Over", 300, 100);
-            }
-        }
     }
 }

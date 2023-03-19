@@ -8,7 +8,7 @@ const control = {
 
 //Event Listner KEY DOWN:
 addEventListener("keydown", (event) => {
-if (!player.hit){ 
+if (!player.hit || !player.dead){ 
 switch (event.code){
 //Move right:
     case "KeyD":
@@ -47,7 +47,7 @@ switch (event.code){
 
 //Event Listner KEY UP:
 addEventListener("keyup", (event) => {
-if (!player.hit){
+if (!player.hit || !player.dead){
 switch (event.code){
 //Move right:
     case "KeyD":
@@ -71,6 +71,7 @@ switch (event.code){
     case "KeyW":
     control.up = false;
     player.jumpPremission = false;
+    
     player.jumpBlock = setTimeout(()=>
         {
         player.jumpPremission = true;

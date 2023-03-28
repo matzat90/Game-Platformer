@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <link rel="stylesheet" href="css/uniwersal.css">
+    <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+    <div class="holder">
+    <canvas class="canvas3"></canvas>
+    <canvas class="canvas1"></canvas>
+    <canvas class="canvas2"></canvas>
+    <div class="bar">
+        <div class="bar-stars"><img src="img/spr_star/starIcon.png" alt="starIcon"><div class="bar-star-con">0</div></div>
+        <div class="bar-timer">100</div>
+        <div class="bar-level">Level 1</div>
+    </div>
+    <div class="info">
+        <div class="info-dead displayNone">You Died</div>
+        <div class="info-win displayNone">You Win!</div>
+    </div>
+    
+    </div>
+    <script src = "JS/data/levelsData.js"></script>
+    <script src="JS/utils/game-onload.js"></script>
+    <script src="JS/classes/sprite2.js"></script>
+    
+    <script src="JS/utils/controls.js"></script>
+    <script src="JS/utils/functions.js"></script>
+    <script src="JS/classes/doors.js"></script>
+    
+    <script src="JS/classes/golemEnemy.js"></script>
+    <script src="JS/classes/player.js"></script>
+    <script src="JS/classes/camera.js"></script>
+    <script src="JS/classes/collisionBox.js"></script>
+    <script src="JS/classes/collisionCoinBox.js"></script>
+    <script src="JS/classes/autoLoopBg.js"></script>
+    <script src="JS/classes/paraBg.js"></script>
+    <script src = "JS/data/collisionArr.js"></script>
+    <script src="JS/main.js"></script>
+    <script src="JS/utils/bar.js"></script>
+</body>
+</html>

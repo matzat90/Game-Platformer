@@ -1,0 +1,64 @@
+@font-face {
+    font-family: 'BebasNeue-Regular';
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/BebasNeue-Regular.ttf")
+}
+
+@font-face {
+    font-family: 'Creepster-Regular';
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/Creepster-Regular.ttf")
+}
+
+@font-face {
+    font-family: 'Font3';
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/AbrilFatface-Regular.ttf")
+}
+    
+.opacity-5{
+    opacity: .5;
+}
+    .color-red{
+        color: red;
+    }
+
+    .color-white{
+        color:white;
+    }
+
+    .color-green{
+        color: green;
+    }
+
+    .anim-blink{
+        animation: Blink 2s infinite linear;
+    }
+    @keyframes Blink{
+        0%{
+            opacity: 1;
+        }
+        50%{
+            opacity: 1;
+        }
+        75%{
+            opacity: 0;
+        }
+        100%{
+            opacity: 1;
+        }
+    }
+
+    .anim-OnceFadeIn {
+        animation: OnceFadeIn 1s forwards linear;
+    }
+    @keyframes OnceFadeIn{
+            0%{opacity: 0;}
+            100%{opacity: 100%;}
+        }
+    .displayNone{
+        display: none;
+    }

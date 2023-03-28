@@ -24,3 +24,14 @@ function timerGameOver(){
     timerDis.innerHTML = `Press <span class="color-white">F5</span>  to try again`
     clearInterval(countDown)
 }
+
+function winnerActive(){
+    timerDis.classList.toggle("anim-blink")
+    timerDis.classList.toggle("color-green")
+    infoWin.classList.toggle("displayNone")
+    infoWin.classList.toggle("anim-OnceFadeIn")
+    clearInterval(countDown)
+    timerDis.innerHTML = `Press <span class="color-white">F5</span>  to continue`
+}
+
+levelDis.innerHTML = "LEVEL "+level

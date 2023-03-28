@@ -18,6 +18,7 @@ update(delta){
     //ctx.fillStyle = "rgba(0,255,0,.5)"
     //ctx.fillRect(this.x, this.y, this.width, this.height)
     this.followPlayer(delta)
+   
     
 }
 

@@ -64,6 +64,9 @@ class Player extends Sprite2 {
         this.jumpPremission = true;
         this.jumpBlock; //blocks jump for Xs
         this.jumpBlockTimer = 300;
+        this.jumpCounter = 50
+        this.jumpState = "fall"
+        this.jumpInterval;
         this.jumpCount = 0; // jump control
         this.jumpMax = 25; // jump max distance
         
@@ -72,11 +75,10 @@ class Player extends Sprite2 {
     //Main function:
     update(delta) {
         
-        if (!this.dead && !this.hit){
-            if (this.victory){
-                return
-            } else {
+        if (!this.dead && !this.hit && !this.victory){
         
+           // ctx.fillStyle ="red";
+           // ctx.fillRect(this.x,this.y,this.width,this.height);
         this.drawSpr()
         this.applyGravity(delta);
         this.jump();
@@ -85,8 +87,7 @@ class Player extends Sprite2 {
         this.moveX(delta);
         
         this.spriteControl();
-        //ctx.fillStyle ="red";
-        //ctx.fillRect(this.x,this.y,this.width,this.height);
+        
         
         this.collisionCoinsFun()
         this.collisionFinish()
@@ -96,7 +97,7 @@ class Player extends Sprite2 {
         
        // ctx.fillStyle = this.cam.color;
        // ctx.fillRect(this.cam.x,this.cam.y,this.cam.width,this.cam.height);
-            }
+        
         } else {
             if (this.dead){
             this.drawSpr()
@@ -113,21 +114,28 @@ class Player extends Sprite2 {
             this.moveX(delta)
             this.y -= 10
             
+            } else if (this.victory){
+             
+            this.collisionFinish()
+            this.moveXauto(delta)  
+            this.spriteControl();
+            this.drawSpr()
+            this.applyGravity(delta)
+            this.verticalCollision()
+            
             }
-            //this.restartTimer = setTimeout(() => {
-                //this.dead = false;
-                //ctx.translate(this.x - 1300,0)
-                //this.reset()
-            //}, 1000)
+            
             
             
             
             
         }
         
+        
     }
             //Move player and camera Horizontal
             moveX(delta){
+                
                 //Move Left and Right:
                 if(control.left && control.right){this.velocity.x = 0}
                 //Move Right:
@@ -136,8 +144,12 @@ class Player extends Sprite2 {
                 if (this.velocity.x == -1 && this.x >= 0){this.x += this.velocity.x * delta}
                 
             }
-           
-            
+        
+            //Move Horizontal Automaticly (for semi-animation reasons like Levle-Finish)
+            moveXauto(delta){
+                
+            this.x += this.velocity.x * delta
+            }
             //Collision Horizontal:
             horizontalCollision(delta){
                 for (let i = 0; i<this.collisionBox.length; i++){
@@ -176,12 +188,50 @@ class Player extends Sprite2 {
             }
             //Collison Finish:
             collisionFinish(){
-                if (collision(this, finish)){
-                    if (finish.status == true){
+                if (collision(this, finish) && this.score == this.scoreMax){
+                    
+                    
                         
-                        this.victory = true;
-                        console.log(this.victory)
-                    }
+                        
+                        
+                        if(this.x+this.width/2 < finish.x+finish.width/2 - 10){
+                            this.velocity.x = 1
+                        } else if (this.x+this.width/2 > finish.x+finish.width/2 + 10){
+                            this.velocity.x = -1
+                        } else {
+                            this.velocity.x = 0
+                            
+                           
+                                if(infoWin.classList.contains("displayNone")){
+                                                    
+                                    winnerActive()
+                                }
+                                if(localStorage.getItem("premisson") == "true" && !this.victory){
+                                    let curNum = Number(sessionStorage.getItem("level"))
+                                    sessionStorage.setItem("level", curNum +1)
+                                    
+                                    let savedLvl = Number(localStorage.getItem("level"))
+                                    if (savedLvl <= curNum){localStorage.setItem("level", savedLvl + 1)}
+                                    
+                                    this.victory = true;
+                                    
+                                    return
+                                } else if (localStorage.getItem("premisson") == "false" && !this.victory){
+                                    let tempNum = Number(sessionStorage.getItem("level"))
+                                    sessionStorage.setItem("level", tempNum +1)
+                                    this.victory = true;
+                                    return
+                                }
+                            //if (this.imgName == "teleport" && this.curFr == 5)
+                            //this.frames = 1
+                            //this.img.width = 150
+                            //this.curFr = 6
+                            //this.counter = 0
+
+                            
+                            
+                        }
+                        
                 }
             }
             //Applys global gravity from main.js
@@ -202,21 +252,39 @@ class Player extends Sprite2 {
             }
 
             //Jump (move Verticly):
+            
             jump(){
-            if (control.up && this.jumpPremission == true){
-                if (this.jumpCount < this.jumpMax){
-                    this.y -= 26;
-                    this.jumpCount ++;
-                    
-                    
-                }
-                else {
-                    control.up = false;
-                    this.jumpFalse()
-                }
-              } else {
+
+            
+            switch (control.up){
+                case true:
+                if (this.jumpCounter >= 20 && this.jumpState == "jump"){
+                        this.state == "fall"
+                        control.up = false
+                } else if (this.jumpState != "fall"){    
+                this.jumpState = "jump"
+                this.jumpCounter += 1
+                this.y -= 25
                 
-              }
+            }  else if (this.jumpState == "fall" && this.jumpCounter == 0){
+                this.jumpState = "jump"
+                this.jumpCounter += 1
+                this.y -= 25
+            }
+                
+                
+                
+                break
+                case false:
+                    this.jumpState = "fall"
+                    
+                    if (this.jumpCounter > 0 && this.jumpState == "fall"){
+                        this.jumpCounter --
+                    }
+                    
+                break
+            }
+          
             }
             //Collision Verticly:
             verticalCollision(){
@@ -225,19 +293,31 @@ class Player extends Sprite2 {
                     
                 if (collision(this, curCol)){
                     
-                    if (this.velocity.y > 0 && !control.up){
+                    if (this.velocity.y > 0 && !control.up && this.jumpState == "fall"){
                         
-                        this.jumpCount = 0;
+                        this.jumpCounter = 0
+                        this.jumpState = "floor"
+                        this.velocity.y = 0;
+                        this.y = curCol.y - this.height - 0.01;
+                    } else if (this.velocity.y > 0 && control.up && this.jumpState == "fall"){
+                        this.jumpCounter = 0
+                        this.jumpState = "floor"
+                        this.velocity.y = 0;
+                        this.y = curCol.y - this.height - 0.01;
+                    } else if (this.dead || this.victory){
+                        this.jumpCounter = 0
+                        this.jumpState = "floor"
                         this.velocity.y = 0;
                         this.y = curCol.y - this.height - 0.01;
                     }
-                    if (this.velocity.y > 0 && control.up){
-                        
+                    if (this.velocity.y > 0 && control.up && this.jumpState != "floor"){
+                        console.log("tu jestem")
                         this.y = curCol.y + 50 + 0.01;
-                        this.velocity.y = 5;
-                        this.jumpFalse()
-                        control.up = false;
+                     //   this.velocity.y = 0;
+                        //this.jumpFalse()
+                        //control.up = false;
                     }
+
                 }
               }
             }
@@ -262,9 +342,28 @@ class Player extends Sprite2 {
                             this.curFr = 0
                             this.counter = 0
                             this.loopSprite = true
+                            
                             } 
                             
-                        } else if (!player.dead) {
+                        } else if (this.victory){
+                            if (this.imgName != "teleport"){
+                                this.imgName = "teleport"
+                                    this.row = 10
+                                    this.counter = 0
+                                    this.curFr = 0
+                                    this.frames = 6
+                                    this.img.width = 900
+                                 
+                                    
+                            } if (this.imgName == "teleport" && this.curFr >= 5){
+                                this.row = 10
+                                this.counter = 0
+                                this.curFr = 6
+                                this.frames = 1
+                                this.img.width = 150
+                                
+                            }
+                        }else if (!player.dead || !player.victory) {
                         if (this.velocity.y != 0 && control.up && this.imgName != "JumpR"){
                             this.row = 2
                             this.imgName = "JumpR"
@@ -272,6 +371,7 @@ class Player extends Sprite2 {
                             this.img.width = 300
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         }else if (this.velocity.y != 0 && control.up && control.right && this.imgName != "JumpR"){
                             this.row = 2
@@ -280,6 +380,7 @@ class Player extends Sprite2 {
                             this.img.width = 300
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         }else if (this.velocity.y != 0 && !control.up && this.imgName != "FallR"){
                             this.row = 3
@@ -288,6 +389,7 @@ class Player extends Sprite2 {
                             this.img.width = 300
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         }else if (this.velocity.y != 0 && !control.up && control.right && this.imgName != "FallR"){
                             this.row = 3
@@ -296,6 +398,7 @@ class Player extends Sprite2 {
                             this.img.width = 300
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         }else if (this.velocity.y <= 0 && !control.right && !control.left && !control.up && this.imgName != "IdleR"){
                             this.row = 1
@@ -304,6 +407,7 @@ class Player extends Sprite2 {
                             this.img.width = 600
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         }else if (this.velocity.y <= 0 && control.right && !control.up && this.imgName != "RunR"){
                             this.row = 0
@@ -312,6 +416,7 @@ class Player extends Sprite2 {
                             this.img.width = 900
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         }
                         }
@@ -321,6 +426,7 @@ class Player extends Sprite2 {
                         if (this.imgName == "DeadL" && this.loopSprite && this.curFr >= 4){
                             this.curFr = 5
                             this.counter = 0
+                            
                             }
                             else if (this.imgName != "DeadL" && !this.loopSprite){
                             
@@ -331,14 +437,37 @@ class Player extends Sprite2 {
                             this.curFr = 0
                             this.counter = 0
                             this.loopSprite = true
+                            
                             } 
-                        } else {if (this.velocity.y != 0 && control.up && this.imgName != "JumpL"){
+                        } else if (this.victory){
+                            if (this.imgName != "teleport"){
+                                this.imgName = "teleport"
+                                    this.row = 10
+                                    this.counter = 0
+                                    this.curFr = 0
+                                    this.frames = 6
+                                    this.img.width = 900
+                                 
+                                    
+                            } if (this.imgName == "teleport" && this.curFr >= 5){
+                                this.row = 10
+                                this.counter = 0
+                                this.curFr = 6
+                                this.frames = 1
+                                this.img.width = 150
+                                
+                            }
+                        }
+                        
+                        else if(!this.dead || !this.victory){
+                            if (this.velocity.y != 0 && control.up && this.imgName != "JumpL"){
                             this.row = 6
                             this.imgName = "JumpL"
                             this.frames = 2
                             this.img.width = 300
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         }else if (this.velocity.y != 0 && control.up && control.left && this.imgName != "JumpL"){
                             this.row = 6
@@ -347,6 +476,7 @@ class Player extends Sprite2 {
                             this.img.width = 300
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         }else if (this.velocity.y != 0 && !control.up && this.imgName != "FallL"){
                             this.row = 7
@@ -355,6 +485,7 @@ class Player extends Sprite2 {
                             this.img.width = 300
                             this.curFr = 0
                             this.counter = 0
+                           
                             return
                             
                         }else if (this.velocity.y != 0 && !control.up && control.left && this.imgName != "FallL"){
@@ -364,6 +495,7 @@ class Player extends Sprite2 {
                             this.img.width = 300
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         }else if (this.velocity.y <= 0 && !control.right && !control.left && !control.up && this.imgName != "IdleL"){
                             this.row = 5
@@ -372,6 +504,7 @@ class Player extends Sprite2 {
                             this.img.width = 600
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         }else if (this.velocity.y <= 0 && control.left && !control.up && this.imgName!= "RunL"){
                             this.row = 4
@@ -380,6 +513,7 @@ class Player extends Sprite2 {
                             this.img.width = 900
                             this.curFr = 0
                             this.counter = 0
+                            
                             return
                         } 
                     break

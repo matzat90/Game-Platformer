@@ -4,7 +4,7 @@ let check = () => {
 }
 
 let level = check()
-
+//let level = 2 //for tests
 
 
 
